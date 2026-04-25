@@ -4,11 +4,14 @@ import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import SegmentedTabs from "@/components/messaging/SegmentedTabs";
 import OfferThreadCard from "@/components/messaging/OfferThreadCard";
-import { useMemo, useState } from "react";
-import { MOCK_THREADS, type OfferSide } from "./mockThreads";
+import { useMemo } from "react";
+import { MOCK_THREADS } from "./mockThreads";
+import { useOfferStatuses } from "./useOfferStatuses";
+import { useActiveMessagingTab } from "./useActiveMessagingTab";
 
 export default function Messaging() {
-  const [tab, setTab] = useState<OfferSide>("my");
+  const { tab, setTab } = useActiveMessagingTab();
+  const { getStatus } = useOfferStatuses(MOCK_THREADS);
 
   const threads = useMemo(
     () => MOCK_THREADS.filter((t) => t.side === tab),
@@ -19,9 +22,9 @@ export default function Messaging() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full max-w-[420px] space-y-4 px-4">
+      <div className="mx-auto w-full space-y-4 px-4">
         <SegmentedTabs
-          tabs={["my", "their"] as const}
+          tabs={["MY OFFERS", "THEIR OFFERS"] as const}
           value={tab}
           onChange={setTab}
         />
@@ -34,6 +37,8 @@ export default function Messaging() {
               postTitle={t.postTitle}
               otherName={t.otherName}
               offerSummary={t.offerSummary}
+              side={t.side}
+              status={getStatus(t.id, t.status)}
             />
           ))}
           {threads.length === 0 ? (

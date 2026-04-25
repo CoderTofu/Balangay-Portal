@@ -62,7 +62,7 @@ export default function BottomNav() {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-[#17136D]/10 shadow-[0_-10px_30px_rgba(16,24,40,0.08)] safe-bottom no-print">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-[#17136D]/10  safe-bottom no-print">
       <div className="mx-auto flex h-16 max-w-lg items-center justify-around px-2">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.href);

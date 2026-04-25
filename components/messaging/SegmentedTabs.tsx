@@ -22,7 +22,7 @@ export default function SegmentedTabs<T extends string>({
               type="button"
               onClick={() => onChange(t)}
               className={[
-                "cursor-pointer rounded-xl px-4 py-3 text-xs font-extrabold tracking-wide transition active:scale-[0.99]",
+                "cursor-pointer rounded-xl px-4 py-3 text-xs font-medium tracking-wide transition active:scale-[0.99]",
                 active
                   ? "bg-[#F1D36B] text-[#17136D]"
                   : "bg-white text-slate-500 hover:bg-slate-50",
