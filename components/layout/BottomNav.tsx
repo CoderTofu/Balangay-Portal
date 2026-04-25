@@ -87,23 +87,15 @@ export default function BottomNav() {
             <Link
               key={item.label}
               href={resolvedHref}
-              className={`relative flex min-w-16 flex-col items-center justify-center py-2 transition-colors ${
-                isPost
-                  ? ""
-                  : active
-                    ? `text-[${brand}]`
-                    : "text-slate-400 hover:text-slate-600"
-              }`}
+              className={`relative flex min-w-16 flex-col items-center justify-center py-2 transition-colors text-slate-400 hover:text-slate-600`}
             >
               <>
-                {!isPost && (
-                  <span
-                    aria-hidden="true"
-                    className={` absolute top-1/2 h-12 w-full translate-y-[-50%] rounded-sm transition ${
-                      active ? "bg-[#17136D]/10" : "bg-transparent"
-                    }`}
-                  />
-                )}
+                <span
+                  aria-hidden="true"
+                  className={` absolute top-1/2 h-12 w-full translate-y-[-50%] rounded-sm transition ${
+                    active ? "bg-[#17136D]/10" : "bg-transparent"
+                  }`}
+                />
                 <Icon
                   size={22}
                   strokeWidth={active ? 2.5 : 1.8}

@@ -22,7 +22,7 @@ export default function Messaging() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-4 px-4 mt-4">
+      <div className="mx-auto w-full space-y-4 px-4 mt-4 max-w-[650px]">
         <SegmentedTabs
           tabs={["MY OFFERS", "THEIR OFFERS"] as const}
           value={tab}

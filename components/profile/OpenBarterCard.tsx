@@ -26,15 +26,15 @@ export default function OpenBarterCard({
         <button
           type="button"
           onClick={onOpen}
-          className="group relative h-[150px] w-[150px] overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
+          className="group relative h-37.5 w-37.5 overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
           aria-label={`View ${title}`}
         >
           {imageSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={`images/${imageSrc}`}
+              src={imageSrc}
               alt={title}
-              className="object-cover transition duration-300 group-hover:scale-[1.02]"
+              className="object-cover transition duration-300 group-hover:scale-[1.02] h-[200px]"
               loading="lazy"
             />
           ) : (

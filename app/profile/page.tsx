@@ -4,8 +4,6 @@ import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
-import Button from "@/components/forms/Buttons";
-import Modal from "@/components/ui/Modal";
 import ProfileSummaryCard from "@/components/profile/ProfileSummaryCard";
 import OpenBarterCard from "@/components/profile/OpenBarterCard";
 
@@ -30,8 +28,15 @@ type TradeItem = {
 
 type OpenBarter = {
   id: string;
-  offers: TradeItem[];
-  requests: TradeItem[];
+  author_id?: string;
+  title?: string;
+  location?: string;
+  type?: string;
+  status?: string;
+  imgURL?: string | null;
+  image_url?: string | null;
+  requests?: Array<string | TradeItem>;
+  offers?: TradeItem[];
 };
 
 function displayName(user: UserProfile | null) {
@@ -53,8 +58,6 @@ export default function Profile() {
   const [openBarters, setOpenBarters] = useState<OpenBarter[]>([]);
   const [loadingUser, setLoadingUser] = useState(false);
   const [loadingTrades, setLoadingTrades] = useState(false);
-
-  const [selectedBarter, setSelectedBarter] = useState<OpenBarter | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -119,7 +122,7 @@ export default function Profile() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-5 px-4 pt-4 max-w-[650px]">
+      <div className="mx-auto w-full max-w-162.5 space-y-5 px-4 pt-4">
         <ProfileSummaryCard
           name={displayName(user)}
           location={user?.location || "—"}
@@ -152,11 +155,22 @@ export default function Profile() {
             <div className="space-y-4">
               {openBarters.map((barter) => {
                 const primaryOffer = barter.offers?.[0];
-                const title = primaryOffer?.name ?? "Barter Offer";
-                const subtitle = user?.location ?? "—";
-                const imageSrc = primaryOffer?.image_url
-                  ? `/uploads/${primaryOffer.image_url}`
-                  : null;
+                const title =
+                  barter.title ??
+                  primaryOffer?.name ??
+                  (typeof barter.requests?.[0] === "string"
+                    ? (barter.requests[0] as string)
+                    : undefined) ??
+                  "Barter Offer";
+
+                const subtitle = barter.location ?? user?.location ?? "—";
+
+                const imageFile =
+                  barter.imgURL ??
+                  barter.image_url ??
+                  primaryOffer?.image_url ??
+                  null;
+                const imageSrc = imageFile ? `/images/${imageFile}` : null;
 
                 return (
                   <OpenBarterCard
@@ -165,7 +179,7 @@ export default function Profile() {
                     title={title}
                     subtitle={subtitle}
                     imageSrc={imageSrc}
-                    onOpen={() => setSelectedBarter(barter)}
+                    onOpen={() => router.push(`/home/${barter.id}`)}
                   />
                 );
               })}
