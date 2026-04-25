@@ -49,11 +49,17 @@ export default function BottomNav() {
   const brand = "#17136D";
 
   const isActive = (href: string) => {
-    if (href === "/marketplace") {
-      return pathname === "/marketplace" || pathname === "/";
+    if (href === "/home") {
+      return pathname === "/home" || pathname === "/";
     }
     return pathname.startsWith(href);
   };
+
+  const shouldShowNav = NAV_ITEMS.some((item) => isActive(item.href));
+
+  if (!shouldShowNav) {
+    return null;
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-[#17136D]/10 shadow-[0_-10px_30px_rgba(16,24,40,0.08)] safe-bottom no-print">

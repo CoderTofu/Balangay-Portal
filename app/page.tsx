@@ -5,5 +5,5 @@ import "./index.css";
 import Image from "next/image";
 
 export default function App() {
-  return <div className="min-h-screen bg-white"></div>;
+  return <div className="min-h-screen max-w-screen bg-white"></div>;
 }

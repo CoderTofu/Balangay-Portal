@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import InputField from "@/components/forms/InputField";
+import Button from "@/components/forms/Buttons";
 import { useState } from "react";
 
 export default function Login() {
@@ -12,7 +13,7 @@ export default function Login() {
     <main className="min-h-screen bg-white">
       <div className="mx-auto flex min-h-screen w-full flex-col">
         {/* Header / artwork */}
-        <section className="relative flex-1 px-8 pt-14">
+        <section className="relative flex-1 px-8 pt-14 max-w-screen overflow-hidden">
           {/* Background */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-linear-to-b from-[#9DD6D3] via-[#F6C56F] to-white" />
@@ -33,7 +34,7 @@ export default function Login() {
           </h1>
 
           {/* Logo illustration */}
-          <div className="pointer-events-none absolute bottom-0 right-0 z-10 w-[500px] translate-x-1/5 translate-y-1/7">
+          <div className="pointer-events-none absolute bottom-0 right-0 z-1 w-[500px] translate-x-1/5 ">
             <Image
               alt="Balangay"
               src="/design-assets/logo-login.png"
@@ -55,7 +56,7 @@ export default function Login() {
                 setContent={setEmail}
                 placeholder="Email address"
                 autoComplete="email"
-                className="border-transparent shadow-none focus:ring-0"
+                className="border shadow-none focus:ring-0"
               />
             </div>
 
@@ -66,16 +67,11 @@ export default function Login() {
                 setContent={setPassword}
                 placeholder="Password"
                 autoComplete="current-password"
-                className="border-transparent shadow-none focus:ring-0"
+                className="border shadow-none focus:ring-0"
               />
             </div>
 
-            <button
-              type="submit"
-              className="mt-3 w-full rounded-2xl bg-[#17136D] px-6 py-5 text-base font-semibold text-white shadow-[0_12px_30px_rgba(23,19,109,0.35)] transition active:scale-[0.99]"
-            >
-              Sign in
-            </button>
+            <Button text="Sign in" clickEvent={() => {}} />
           </form>
 
           <div className="mt-10 flex items-center justify-center gap-3">
