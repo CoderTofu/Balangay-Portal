@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function TopBar() {
   return (
-    <header className="sticky top-0 z-10 bg-slate-50/90 backdrop-blur border-b border-gray-300 mb-4">
+    <header className="sticky top-0 z-50 bg-slate-50 backdrop-blur border-b border-gray-300">
       <div className="mx-auto flex w-full items-center justify-between px-4 pb-3 pt-4">
         <div className="flex items-center gap-3">
           <Link href={"/home"}>
