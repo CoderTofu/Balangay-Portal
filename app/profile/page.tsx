@@ -119,7 +119,7 @@ export default function Profile() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-5 px-4 max-w-[650px]">
+      <div className="mx-auto w-full space-y-5 px-4 pt-4 max-w-[650px]">
         <ProfileSummaryCard
           name={displayName(user)}
           location={user?.location || "—"}
