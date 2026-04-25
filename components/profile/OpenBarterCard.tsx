@@ -34,11 +34,11 @@ export default function OpenBarterCard({
             <img
               src={imageSrc}
               alt={title}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+              className="h-[200px] w-[200px] object-cover transition duration-300 group-hover:scale-[1.02]"
               loading="lazy"
             />
           ) : (
-            <div className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
+            <div className="h-[200px] w-[200px] absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
           )}
         </button>
 
@@ -51,7 +51,9 @@ export default function OpenBarterCard({
             <div className="truncate text-sm font-extrabold tracking-tight text-slate-900">
               {title}
             </div>
-            <div className="mt-0.5 text-xs font-semibold text-slate-500">{subtitle}</div>
+            <div className="mt-0.5 text-xs font-semibold text-slate-500">
+              {subtitle}
+            </div>
           </button>
 
           <div className="mt-3">

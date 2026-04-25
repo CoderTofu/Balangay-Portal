@@ -39,7 +39,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Profile",
-    href: `/profile?id=${localStorage.getItem('curruser_id')}`,
+    href: "/profile",
     icon: User,
   },
 ];
@@ -47,6 +47,12 @@ const NAV_ITEMS = [
 export default function BottomNav() {
   const pathname = usePathname();
   const brand = "#17136D";
+
+  const profileHref = React.useMemo(() => {
+    if (typeof window === "undefined") return "/profile";
+    const id = window.localStorage.getItem("curruser_id");
+    return id ? `/profile?id=${id}` : "/profile";
+  }, []);
 
   const isActive = (href: string) => {
     if (href === "/home") {
@@ -72,12 +78,14 @@ export default function BottomNav() {
           const active = isActive(item.href);
           const Icon = item.icon;
           const isPost = item.label === "Post";
+          const resolvedHref =
+            item.label === "Profile" ? profileHref : item.href;
 
           return (
             <Link
-              key={item.href}
-              href={item.href}
-              className={`relative flex min-w-[64px] flex-col items-center justify-center py-2 transition-colors ${
+              key={item.label}
+              href={resolvedHref}
+              className={`relative flex min-w-16 flex-col items-center justify-center py-2 transition-colors ${
                 isPost
                   ? ""
                   : active
