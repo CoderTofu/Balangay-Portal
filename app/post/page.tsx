@@ -149,14 +149,14 @@ export default function Post() {
     <div className="min-h-screen bg-white flex flex-col">
       <TopBar />
 
-      <main className="flex-1 pb-24 px-4 pt-4 max-w-lg mx-auto w-full">
+      <main className="flex-1 pb-24 px-4 pt-6 max-w-lg mx-auto w-full overflow-hidden">
         <h1 className="text-2xl font-bold text-[#1a1a2e] mb-5">
           Post a Listing
         </h1>
 
         {/* Image Upload */}
         <div
-          className={`relative w-full rounded-2xl border-2 border-dashed mb-5 overflow-hidden transition-colors cursor-pointer
+          className={`relative w-full rounded-2xl border-2 border-dashed mb-5 overflow-hidden transition-colors cursor-pointer mt-4
             ${isDragging ? "border-[#4b4acf] bg-[#f0f0ff]" : "border-gray-300 bg-gray-100"}
           `}
           style={{ minHeight: "180px" }}
@@ -192,25 +192,6 @@ export default function Post() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Crane tower */}
-                <rect x="180" y="20" width="8" height="140" fill="#9ca3af" />
-                {/* Crane arm */}
-                <rect x="100" y="20" width="180" height="6" fill="#9ca3af" />
-                {/* Counter-arm */}
-                <rect x="180" y="20" width="60" height="5" fill="#9ca3af" />
-                {/* Cable */}
-                <line x1="140" y1="26" x2="155" y2="100" stroke="#9ca3af" strokeWidth="2" />
-                {/* Hook */}
-                <rect x="148" y="100" width="14" height="10" rx="2" fill="#9ca3af" />
-                {/* Buildings */}
-                <rect x="280" y="80" width="40" height="80" fill="#d1d5db" />
-                <rect x="300" y="60" width="25" height="100" fill="#e5e7eb" />
-                <rect x="50" y="100" width="50" height="60" fill="#d1d5db" />
-                <rect x="65" y="85" width="35" height="75" fill="#e5e7eb" />
-                {/* Windows */}
-                <rect x="288" y="88" width="8" height="8" fill="white" opacity="0.6" />
-                <rect x="304" y="68" width="8" height="8" fill="white" opacity="0.6" />
-                <rect x="288" y="104" width="8" height="8" fill="white" opacity="0.6" />
               </svg>
 
               {/* Camera icon */}
