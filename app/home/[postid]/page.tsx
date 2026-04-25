@@ -32,7 +32,7 @@ export default function PostDetail() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-4 px-4">
+      <div className="mx-auto max-w-[650px] w-full space-y-4 px-4">
         <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
           <div className="relative aspect-16/10 w-full overflow-hidden rounded-t-2xl bg-slate-100">
             {listing.imageSrc ? (

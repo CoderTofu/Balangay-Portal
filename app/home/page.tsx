@@ -40,55 +40,51 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-4 px-4">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+      <div className="mx-auto w-full space-y-4 px-4 flex flex-col items-center">
+        <div className="flex items-center gap-3 max-w-[650px] w-full">
+          <div className="flex-1 w-full rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
             <InputField
               value={query}
               setContent={setQuery}
               placeholder="Search inventory or services..."
-              className="px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 shadow-none focus:ring-0"
+              className="w-full px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 shadow-none focus:ring-0"
             />
           </div>
         </div>
 
-        {filtersOpen ? (
-          <div className="rounded-2xl bg-white p-4 text-sm text-slate-600 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-            Filters coming soon.
+        <div className="max-w-[650px] w-full">
+          <div className="flex gap-3 overflow-x-auto pb-1">
+            {tabs.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setActiveTab(t)}
+                className={[
+                  "cursor-pointer whitespace-nowrap rounded-xl border px-4 py-2 text-sm font-semibold transition active:scale-[0.99]",
+                  t === activeTab
+                    ? "border-[#17136D] bg-[#17136D] text-white"
+                    : "border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200",
+                ].join(" ")}
+              >
+                {t}
+              </button>
+            ))}
           </div>
-        ) : null}
 
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          {tabs.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setActiveTab(t)}
-              className={[
-                "cursor-pointer whitespace-nowrap rounded-xl border px-4 py-2 text-sm font-semibold transition active:scale-[0.99]",
-                t === activeTab
-                  ? "border-[#17136D] bg-[#17136D] text-white"
-                  : "border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200",
-              ].join(" ")}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+          <h2 className="pt-2 text-xl font-extrabold tracking-tight text-slate-900">
+            Featured Listings
+          </h2>
 
-        <h2 className="pt-2 text-xl font-extrabold tracking-tight text-slate-900">
-          Featured Listings
-        </h2>
-
-        <div className="space-y-4">
-          {filtered.map((listing) => (
-            <PostCard key={listing.id} listing={listing} />
-          ))}
-          {filtered.length === 0 ? (
-            <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-500 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-              No listings match your search.
-            </div>
-          ) : null}
+          <div className="space-y-4">
+            {filtered.map((listing) => (
+              <PostCard key={listing.id} listing={listing} />
+            ))}
+            {filtered.length === 0 ? (
+              <div className="rounded-2xl bg-white p-6 text-center text-sm text-slate-500 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                No listings match your search.
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
