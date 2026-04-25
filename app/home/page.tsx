@@ -97,7 +97,7 @@ export default function Home() {
             Featured Listings
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-4 pt-4">
             {filtered.map((listing) => (
               <PostCard key={listing.id} listing={listing} />
             ))}
