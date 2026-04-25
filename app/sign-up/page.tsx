@@ -113,7 +113,7 @@ export default function SignUp() {
       <TopBar></TopBar>
       <div className="mx-auto w-full px-4 ">
         {/* Stepper */}
-        <section className="rounded-2xl bg-white p-4 shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
+        <section className="rounded-2xl bg-white px-6 pt-5 pb-10 shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
           <Stepper
             steps={["Register", "Profile"]}
             currentStep={step === "register" ? 0 : 1}
