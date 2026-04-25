@@ -31,7 +31,7 @@ export default function InputField({
       type={type}
       value={resolvedValue}
       onChange={handleChange}
-      className={`w-full rounded-xl border border-[#bfd5f0] bg-white px-6 py-5 text-[#3268A8] placeholder:text-[#3268A8] outline-none focus:ring-2 focus:ring-[#3268A8]/25 ${className}`.trim()}
+      className={`w-full rounded-xl border border-[#bfd5f0] bg-white px-5 py-3 text-[#000] placeholder:text-[#3268A8] outline-none focus:ring-2 focus:ring-[#3268A8]/25 ${className}`.trim()}
       {...props}
     />
   );

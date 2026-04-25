@@ -4,8 +4,10 @@ import Image from "next/image";
 import InputField from "@/components/forms/InputField";
 import Button from "@/components/forms/Buttons";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,14 +29,14 @@ export default function Login() {
           </div>
 
           {/* Headline */}
-          <h1 className="relative z-10 max-w-[260px] text-3xl font-semibold italic tracking-tight text-white drop-shadow-sm">
+          <h1 className="relative z-10 max-w-65 text-3xl font-semibold italic tracking-tight text-white drop-shadow-sm">
             Ikot ng halaga,
             <br />
             ikot ng kabuhayan
           </h1>
 
           {/* Logo illustration */}
-          <div className="pointer-events-none absolute bottom-0 right-0 z-1 w-[500px] translate-x-1/5 ">
+          <div className="pointer-events-none absolute bottom-0 right-0 z-1 w-125 translate-x-1/5 ">
             <Image
               alt="Balangay"
               src="/design-assets/logo-login.png"
@@ -48,7 +50,7 @@ export default function Login() {
 
         {/* Form */}
         <section className="px-8 pb-10 pt-6">
-          <form className="space-y-4">
+          <div className="space-y-4">
             <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(16,24,40,0.12)]">
               <InputField
                 type="email"
@@ -71,14 +73,23 @@ export default function Login() {
               />
             </div>
 
-            <Button text="Sign in" clickEvent={() => {}} />
-          </form>
+            <div className="flex 0 gap-2">
+              <Button
+                text="Sign up"
+                clickEvent={() => {
+                  router.push("/sign-up");
+                }}
+                variant="secondary"
+              ></Button>
+              <Button text="Sign in" clickEvent={() => {}} />
+            </div>
+          </div>
 
-          <div className="mt-10 flex items-center justify-center gap-3">
-            <span className="text-sm font-semibold italic tracking-tight text-[#17136D]">
+          {/* <div className="mt-10 flex items-center justify-center gap-3">
+            <span className="text-xs font-semibold italic tracking-tight text-[#17136D]">
               Balangay
             </span>
-          </div>
+          </div> */}
         </section>
       </div>
     </main>
