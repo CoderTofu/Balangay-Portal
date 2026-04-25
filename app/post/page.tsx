@@ -58,13 +58,15 @@ export default function Post() {
   const [lookingForSearch, setLookingForSearch] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
- const handleImageUpload = (files: FileList | null) => {
-  if (!files || files.length === 0) return;
+  const handleImageUpload = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
 
-  const file = files[0];
-  setImage(file.name);
-};
+    const file = files[0];
+    setImage(file.name);
+  };
   const removeImage = () => {
     setImage(null);
   };
@@ -72,7 +74,7 @@ export default function Post() {
     setLookingFor((prev) =>
       prev.includes(option)
         ? prev.filter((o) => o !== option)
-        : [...prev, option]
+        : [...prev, option],
     );
   };
 
@@ -81,23 +83,71 @@ export default function Post() {
   };
 
   const handleSubmit = () => {
+    setSubmitError(null);
     setShowSubmitModal(true);
     console.log({ image, listingName, location, category, lookingFor });
   };
 
+  const handleConfirmSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/trades/create-trade",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: listingName,
+            location: location,
+            type: category,
+            requests: lookingFor,
+            author_id: localStorage.getItem("curruser_id"),
+            imgURL: image || null,
+            status: "open",
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to create listing.");
+      }
+
+      setShowSubmitModal(false);
+    } catch {
+      setSubmitError("Unable to submit listing right now. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const canSubmit =
-  listingName.trim().length > 0 && image !== null && lookingFor.length > 0;
+    listingName.trim().length > 0 && image !== null && lookingFor.length > 0;
 
   const categoryIcons: Record<CategoryType, JSX.Element> = {
     Inventory: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
         <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
         <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
     Storage: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
         <rect x="2" y="3" width="20" height="5" rx="1" />
         <rect x="2" y="10" width="20" height="5" rx="1" />
         <rect x="2" y="17" width="20" height="5" rx="1" />
@@ -107,7 +157,14 @@ export default function Post() {
       </svg>
     ),
     Service: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -154,16 +211,18 @@ export default function Post() {
 
           <LabeledField label="Category Type">
             <div className="grid grid-cols-3 gap-3">
-            {(["Inventory", "Storage", "Service"] as CategoryType[]).map((cat) => (
-              <ChoiceButton
-                key={cat}
-                label={cat}
-                selected={category === cat}
-                onSelect={() => setCategory(cat)}
-                icon={categoryIcons[cat]}
-                className="px-2 py-3 text-xs"
-              />
-            ))}
+              {(["Inventory", "Storage", "Service"] as CategoryType[]).map(
+                (cat) => (
+                  <ChoiceButton
+                    key={cat}
+                    label={cat}
+                    selected={category === cat}
+                    onSelect={() => setCategory(cat)}
+                    icon={categoryIcons[cat]}
+                    className="px-2 py-3 text-xs"
+                  />
+                ),
+              )}
             </div>
           </LabeledField>
 
@@ -194,8 +253,8 @@ export default function Post() {
 
       <Modal
         open={showSubmitModal}
-        title="Listing ready to submit"
-        description="Your post details are captured. Wire this to your API create endpoint when ready."
+        title="Confirm listing submission"
+        description="Please review the details below before posting this listing."
         onClose={() => setShowSubmitModal(false)}
       >
         <div className="space-y-3 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
@@ -215,29 +274,28 @@ export default function Post() {
           <div className="text-sm font-semibold text-slate-700">
             <span className="text-slate-500">Images:</span> {image ? 1 : 0}
           </div>
-          <Button
-            text="Close"
-            variant="secondary"
-            className="mt-3 rounded-xl py-3 text-sm"
-            clickEvent={async () => {
-              setShowSubmitModal(false);
-              const resp = await fetch('http://localhost:8080/api/trades/create-trade', 
-                {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    title: listingName,
-                    location: location,
-                    type: category,
-                    requests: lookingFor,
-                    author_id: localStorage.getItem('curruser_id'),
-                    imgURL: image || null,
-                    status: 'open'
-                  }),
-                }
-              )
-            }}
-          />
+          {submitError ? (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600">
+              {submitError}
+            </div>
+          ) : null}
+
+          <div className="mt-3 flex gap-3">
+            <Button
+              text="Cancel"
+              variant="secondary"
+              className="mt-0 w-1/2 rounded-xl py-3 text-sm"
+              disabled={isSubmitting}
+              clickEvent={() => setShowSubmitModal(false)}
+            />
+            <Button
+              text={isSubmitting ? "Submitting..." : "Confirm"}
+              variant="primary"
+              className="mt-0 w-1/2 rounded-xl py-3 text-sm"
+              disabled={isSubmitting}
+              clickEvent={handleConfirmSubmit}
+            />
+          </div>
         </div>
       </Modal>
     </div>

@@ -62,7 +62,7 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
 
-      <div className="mx-auto w-full space-y-4 px-4 flex flex-col items-center">
+      <div className="mx-auto w-full space-y-4 mt-4 px-4 flex flex-col items-center">
         <div className="flex items-center gap-3 max-w-[650px] w-full">
           <div className="flex-1 w-full rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
             <InputField
