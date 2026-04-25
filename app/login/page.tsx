@@ -12,7 +12,7 @@ export default function Login() {
     <main className="min-h-screen bg-white">
       <div className="mx-auto flex min-h-screen w-full flex-col">
         {/* Header / artwork */}
-        <section className="relative flex-1 overflow-hidden px-8 pt-14">
+        <section className="relative flex-1 px-8 pt-14">
           {/* Background */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-linear-to-b from-[#9DD6D3] via-[#F6C56F] to-white" />
@@ -33,7 +33,7 @@ export default function Login() {
           </h1>
 
           {/* Logo illustration */}
-          <div className="pointer-events-none absolute bottom-10 left-1/2 z-10 w-[360px] -translate-x-1/2">
+          <div className="pointer-events-none absolute bottom-0 right-0 z-10 w-[500px] translate-x-1/5 translate-y-1/7">
             <Image
               alt="Balangay"
               src="/design-assets/logo-login.png"
@@ -79,13 +79,7 @@ export default function Login() {
           </form>
 
           <div className="mt-10 flex items-center justify-center gap-3">
-            <Image
-              alt="Balangay"
-              src="/design-assets/logo-login.png"
-              width={26}
-              height={26}
-            />
-            <span className="text-lg font-semibold italic tracking-tight text-[#17136D]">
+            <span className="text-sm font-semibold italic tracking-tight text-[#17136D]">
               Balangay
             </span>
           </div>
