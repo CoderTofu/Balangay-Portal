@@ -47,11 +47,13 @@ const NAV_ITEMS = [
 export default function BottomNav() {
   const pathname = usePathname();
   const brand = "#17136D";
+  const [profileHref, setProfileHref] = React.useState("/profile");
 
-  const profileHref = React.useMemo(() => {
-    if (typeof window === "undefined") return "/profile";
+  React.useEffect(() => {
     const id = window.localStorage.getItem("curruser_id");
-    return id ? `/profile?id=${id}` : "/profile";
+    if (id) {
+      setProfileHref(`/profile?id=${id}`);
+    }
   }, []);
 
   const isActive = (href: string) => {
