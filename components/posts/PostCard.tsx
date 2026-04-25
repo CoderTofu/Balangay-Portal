@@ -3,29 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Button from "../forms/Buttons";
 import { Heart } from "lucide-react";
 import type { Listing } from "./types";
 
 type PostCardProps = {
   listing: Listing;
   initiallySaved?: boolean;
-  onSaveToggle?: (listingId: string, saved: boolean) => void;
-  onOffer?: (listingId: string) => void;
 };
 
-export default function PostCard({
-  listing,
-  initiallySaved = false,
-  onSaveToggle,
-  onOffer,
-}: PostCardProps) {
+export default function PostCard({ listing, initiallySaved = false }: PostCardProps) {
   const [saved, setSaved] = useState(initiallySaved);
-
-  function handleSaveToggle() {
-    const nextSaved = !saved;
-    setSaved(nextSaved);
-    onSaveToggle?.(listing.id, nextSaved);
-  }
 
   return (
     <article className="group rounded-2xl border border-slate-300 bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(16,24,40,0.16)]">
@@ -45,11 +33,6 @@ export default function PostCard({
           ) : (
             <div className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
           )}
-          {listing.trusted ? (
-            <div className="absolute left-4 top-4 rounded-full bg-[#17136D] px-3 py-1 text-xs font-semibold text-white shadow">
-              Trusted Trader
-            </div>
-          ) : null}
         </div>
 
         <div className="px-5 pb-5 pt-4">
@@ -82,22 +65,13 @@ export default function PostCard({
                 {listing.lookingFor}
               </div>
             </div>
+            <Button
+              text="Offer"
+              className="inline-flex items-center justify-center rounded-xl bg-[#17136D]! px-8! py-2.5! text-sm font-semibold text-white transition hover:bg-[#100b56]! w-fit!"
+            ></Button>
           </div>
         </div>
       </Link>
-
-      <div className="px-5 pb-5 -mt-1 flex items-center justify-between gap-3">
-        <span className="text-xs font-semibold text-slate-500">
-          {saved ? "Saved" : "Tap heart to save"}
-        </span>
-        <Link
-          href={`/home/${listing.id}`}
-          onClick={() => onOffer?.(listing.id)}
-          className="inline-flex items-center justify-center rounded-xl bg-[#17136D] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(23,19,109,0.25)] transition hover:bg-[#100b56]"
-        >
-          Offer
-        </Link>
-      </div>
     </article>
   );
 }
