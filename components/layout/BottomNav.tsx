@@ -22,11 +22,11 @@ const NAV_ITEMS = [
     href: "/home",
     icon: Home,
   },
-  {
-    label: "Search",
-    href: "/search",
-    icon: Search,
-  },
+  // {
+  //   label: "Search",
+  //   href: "/search",
+  //   icon: Search,
+  // },
   {
     label: "Post",
     href: "/post",
