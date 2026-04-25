@@ -9,7 +9,7 @@ export default function TopBar() {
           <Link href={"/home"}>
             <Image
               alt="Balangay"
-              src="/design-assets/logo-login.png"
+              src="/images/balangay-icon.svg"
               width={35}
               height={35}
             />

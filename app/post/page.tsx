@@ -2,6 +2,7 @@
 
 import type { JSX } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import Button from "@/components/forms/Buttons";
@@ -49,6 +50,7 @@ const LOOKING_FOR_OPTIONS = [
 type CategoryType = "Inventory" | "Storage" | "Service";
 
 export default function Post() {
+  const router = useRouter();
   const [image, setImage] = useState<string | null>(null);
   const [listingName, setListingName] = useState("");
   const [location, setLocation] = useState("Manila City");
@@ -114,6 +116,7 @@ export default function Post() {
       }
 
       setShowSubmitModal(false);
+      router.push("/home");
     } catch {
       setSubmitError("Unable to submit listing right now. Please try again.");
     } finally {
