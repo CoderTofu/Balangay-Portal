@@ -2,18 +2,49 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../forms/Buttons";
 import { Heart } from "lucide-react";
 import type { Listing } from "./types";
 
 type PostCardProps = {
-  listing: Listing;
+  listing: any;
   initiallySaved?: boolean;
 };
 
 export default function PostCard({ listing, initiallySaved = false }: PostCardProps) {
+  const [user, setUser] = useState<any>(null);
+  const [authorName, setAuthorName] = useState("");
   const [saved, setSaved] = useState(initiallySaved);
+  useEffect(() => {
+      console.log("Current listing postid page:", listing);
+      if (listing) {
+        //fetch author name using listing.sellerId
+        const fetchUser = async () => {
+        try {
+          console.log("postid page festching user with id", listing.author_id);
+          const res = await fetch(
+            "http://localhost:8080/api/users/get-user-by-id",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id: listing.author_id }),
+            },
+          );
+          const data = await res.json();
+          setUser(data);
+          if (data.type=="business") {
+            setAuthorName(data.company_name);;
+          } else {
+            setAuthorName(data.first_name + " " + data.last_name);
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        } 
+      };
+      fetchUser();
+      }
+    }, [listing]);
 
   return (
     <article className="group rounded-2xl border border-slate-300 bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(16,24,40,0.16)]">
@@ -39,21 +70,11 @@ export default function PostCard({ listing, initiallySaved = false }: PostCardPr
           <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
             {listing.title}
           </h3>
-          <p className="mt-1 text-sm text-slate-600">{listing.sellerName}</p>
+          <p className="mt-1 text-sm text-slate-600">{authorName}</p>
 
           <div className="mt-3 flex flex-wrap gap-2">
-            {listing.tags.map((tag) => (
-              <span
-                key={tag}
-                className={
-                  tag.toLowerCase() === "manila"
-                    ? "rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]"
-                    : "rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600"
-                }
-              >
-                {tag}
-              </span>
-            ))}
+            <span className="rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]">{listing.location}</span>
+            <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">{listing.type}</span>
           </div>
 
           <div className="mt-4 flex items-end border-t border-slate-200 pt-4 justify-between">
@@ -61,10 +82,16 @@ export default function PostCard({ listing, initiallySaved = false }: PostCardPr
               <div className="text-[10px] font-semibold tracking-wide text-slate-400">
                 LOOKING FOR
               </div>
-              <div className="mt-1 text-sm font-semibold text-slate-900">
-                {listing.lookingFor}
-              </div>
-            </div>
+              {/* //TODO: pls fix ui */}
+              {
+                listing.requests.map((request: any) => (
+                  <div key={request} className="mt-1 text-sm font-semibold text-slate-900">
+                    {request}
+                  </div>
+                  
+                ))
+              }
+            </div>  
             <Button
               text="Offer"
               className="inline-flex items-center justify-center rounded-xl bg-[#17136D]! px-8! py-2.5! text-sm font-semibold text-white transition hover:bg-[#100b56]! w-fit!"

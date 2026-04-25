@@ -6,10 +6,12 @@ import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import InputField from "@/components/forms/InputField";
 import PostCard from "@/components/posts/PostCard";
-import { MOCK_LISTINGS } from "./mockListings";
-import { useMemo, useState } from "react";
+// import { MOCK_LISTINGS } from "./mockListings";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Home() {
+  
+  const [listings, setListings] = useState<any[]>([]);
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState<
     "All" | "Inventory" | "Services" | "Storage"
@@ -18,23 +20,43 @@ export default function Home() {
 
   const tabs = ["All", "Inventory", "Services", "Storage"] as const;
 
+  useEffect(() => {
+    //fetch listings from backend
+    try {
+      const fetchListings = async () => {
+        const res = await fetch("http://localhost:8080/api/trades/get-all-open-trades");
+        const data = await res.json();
+        setListings(data);
+      };
+
+      fetchListings();
+    } catch (error) {
+      console.error("Error fetching listings:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("Fetched listings:", listings);
+  }, [listings]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return MOCK_LISTINGS.filter((l) => {
+    return listings?.filter((l) => {
       const matchesTab =
         activeTab === "All" ||
-        l.tags.some((t) => t.toLowerCase() === activeTab.toLowerCase());
+        // l.tags.some((t) => t.toLowerCase() === activeTab.toLowerCase());
+        l.type.toLowerCase() === activeTab.toLowerCase();
 
       const matchesQuery =
-        q.length === 0 ||
-        l.title.toLowerCase().includes(q) ||
-        l.sellerName.toLowerCase().includes(q) ||
-        l.lookingFor.toLowerCase().includes(q) ||
-        l.tags.some((t) => t.toLowerCase().includes(q));
-
+        q==="" ||
+        l.location.toLowerCase().includes(q) ||
+        // l.title.toLowerCase().includes(q) ||
+        l.title.toLowerCase().includes(q) 
+        // l.lookingFor.toLowerCase().includes(q) ||
+      console.log("matchesTab", matchesTab, "matchesQuery", matchesQuery)
       return matchesTab && matchesQuery;
     });
-  }, [activeTab, query]);
+  }, [activeTab, query, listings]);
 
   return (
     <main className="min-h-screen bg-slate-50 pb-24">
@@ -45,7 +67,7 @@ export default function Home() {
           <div className="flex-1 w-full rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
             <InputField
               value={query}
-              setContent={setQuery}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search inventory or services..."
               className="w-full px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 shadow-none focus:ring-0"
             />

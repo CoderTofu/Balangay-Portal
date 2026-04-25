@@ -6,25 +6,82 @@ import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import InputField from "@/components/forms/InputField";
 import Button from "@/components/forms/Buttons";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Paperclip, Send } from "lucide-react";
-import { MOCK_LISTINGS } from "../mockListings";
+// import { MOCK_LISTINGS } from "../mockListings";
 import StarRating from "@/components/posts/StarRating";
 
 export default function PostDetail() {
+  function clamp(n: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, n));
+  }
   const router = useRouter();
+  const [listings, setListings] = useState<any[]>([]);
   const params = useParams<{ postid: string }>();
   const postid = params?.postid;
+  const [authorName, setAuthorName] = useState("");
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+      //fetch listings from backend
+      try {
+        const fetchListings = async () => {
+          const res = await fetch("http://localhost:8080/api/trades/get-all-open-trades");
+          const data = await res.json();
+          setListings(data);
+        };
+  
+        fetchListings();
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    }, []);
 
   const listing = useMemo(
-    () => MOCK_LISTINGS.find((l) => l.id === postid),
-    [postid],
+    () => listings.find((l) => l.id === postid),
+    [postid, listings],
   );
+
+  const ratingAvg = useMemo(() => {
+      const total = user?.rating_sum ?? 0;
+      const jobs = user?.jobs_num ?? 0;
+      return jobs > 0 ? clamp(total / jobs, 0, 5) : 0;
+    }, [user?.jobs_num, user?.rating_sum]);
+
+  useEffect(() => {
+    console.log("Current listing postid page:", listing);
+    if (listing) {
+      //fetch author name using listing.sellerId
+      const fetchUser = async () => {
+      try {
+        console.log("postid page festching user with id", listing.author_id);
+        const res = await fetch(
+          "http://localhost:8080/api/users/get-user-by-id",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: listing.author_id }),
+          },
+        );
+        const data = await res.json();
+        setUser(data);
+        if (data.type=="business") {
+          setAuthorName(data.company_name);;
+        } else {
+          setAuthorName(data.first_name + " " + data.last_name);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } 
+    };
+    fetchUser();
+    }
+  }, [listing]);
 
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  if (!listing) notFound();
+  // if (!listing) notFound();
 
   const canSend = message.trim().length > 0 && !isSending;
 
@@ -35,7 +92,7 @@ export default function PostDetail() {
       <div className="mx-auto max-w-[650px] w-full space-y-4 px-4">
         <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
           <div className="relative aspect-16/10 w-full overflow-hidden rounded-t-2xl bg-slate-100">
-            {listing.imageSrc ? (
+            {/* {listing.imageSrc ? (
               <Image
                 alt={listing.title}
                 src={listing.imageSrc}
@@ -43,9 +100,9 @@ export default function PostDetail() {
                 className="object-cover"
                 priority
               />
-            ) : (
+            ) : ( */}
               <div className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
-            )}
+            {/* )} */}
 
             <div className="absolute left-4 top-4">
               <Button
@@ -59,25 +116,15 @@ export default function PostDetail() {
 
           <div className="px-5 pb-6 pt-5">
             <div className="text-sm font-semibold text-slate-900">
-              {listing.title}
+              {listing?.title}
             </div>
             <div className="mt-1 text-2xl font-extrabold tracking-tight text-[#17136D]">
-              {listing.sellerName}
+              {authorName}
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {listing.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className={
-                    tag.toLowerCase() === "manila"
-                      ? "rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]"
-                      : "rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600"
-                  }
-                >
-                  {tag}
-                </span>
-              ))}
+              <span className="rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]">{listing?.location}</span>
+              <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">{listing?.type}</span>
             </div>
 
             {/* Rating */}
@@ -88,7 +135,9 @@ export default function PostDetail() {
                     USER RATING SCORE
                   </div>
                   <div className="text-[#17136D] text-center">
-                    <StarRating value={listing.stars} />
+                    <StarRating value={
+                      clamp(ratingAvg, 0, 5)
+                    } />
                   </div>
                 </div>
               </div>
@@ -99,9 +148,11 @@ export default function PostDetail() {
                 LOOKING FOR
               </div>
               <div className="mt-2">
-                <span className="inline-flex rounded-lg bg-[#D3E4FE] px-3 py-1.5 text-xs font-bold tracking-wide text-[#17136D]">
-                  {listing.lookingFor.toUpperCase()}
-                </span>
+                {listing?.requests?.map((request: any) => (
+                  <span key={request} className="inline-flex rounded-lg bg-[#D3E4FE] px-3 py-1.5 text-xs font-bold tracking-wide text-[#17136D]">
+                    {request}
+                  </span>
+                ))}
               </div>
             </div>
 
