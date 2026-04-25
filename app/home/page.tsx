@@ -18,7 +18,7 @@ export default function Home() {
   >("All");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const tabs = ["All", "Inventory", "Services", "Storage"] as const;
+  const tabs = ["All", "Inventory", "Service", "Storage"] as const;
 
   useEffect(() => {
     //fetch listings from backend
