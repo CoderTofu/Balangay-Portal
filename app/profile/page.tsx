@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import Button from "@/components/forms/Buttons";
-import StarRating from "@/components/posts/StarRating";
+import Modal from "@/components/ui/Modal";
+import ProfileSummaryCard from "@/components/profile/ProfileSummaryCard";
+import OpenBarterCard from "@/components/profile/OpenBarterCard";
 
 type UserProfile = {
   id: string;
@@ -118,73 +120,19 @@ export default function Profile() {
       <TopBar />
 
       <div className="mx-auto w-full space-y-5 px-4">
-        {/* Profile card */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:shadow-[0_14px_34px_rgba(16,24,40,0.12)]">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <div className="text-2xl font-extrabold tracking-tight text-[#17136D]">
-                {displayName(user)}
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (user?.location) {
-                      navigator.clipboard
-                        ?.writeText(user.location)
-                        .catch(() => {});
-                    }
-                  }}
-                  className="cursor-pointer rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D] transition hover:brightness-95 active:scale-[0.99]"
-                  title="Copy location"
-                >
-                  {(user?.location || "—").toUpperCase()}
-                </button>
-                <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">
-                  {(user?.type === "business"
-                    ? "BUSINESS"
-                    : "INDIVIDUAL"
-                  ).toUpperCase()}
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              aria-label="View notifications"
-              onClick={() => router.push("/messaging")}
-              className="grid h-10 w-10 cursor-pointer place-items-center rounded-xl bg-white text-[#17136D] shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:bg-slate-50 active:scale-[0.99]"
-              title="Go to messages"
-            >
-              🔔
-            </button>
-          </div>
-
-          <div className="mt-4 rounded-2xl bg-[#F1D36B]/70 p-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
-                <div className="text-[11px] font-extrabold tracking-wide text-[#17136D]">
-                  CREDIT SCORE
-                </div>
-                <div className="mt-1 text-3xl font-extrabold tracking-tight text-[#17136D]">
-                  {loadingUser ? "…" : credits.toFixed(1)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-[11px] font-extrabold tracking-wide text-[#17136D]">
-                  RATING
-                </div>
-                <div className="mt-1 flex justify-center">
-                  <StarRating
-                    value={ratingAvg}
-                    className="text-[#17136D]"
-                    starClassName="text-2xl"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ProfileSummaryCard
+          name={displayName(user)}
+          location={user?.location || "—"}
+          userType={user?.type ?? "individual"}
+          credits={credits}
+          rating={ratingAvg}
+          loading={loadingUser}
+          onCopyLocation={() => {
+            if (!user?.location) return;
+            navigator.clipboard?.writeText(user.location).catch(() => {});
+          }}
+          onMessageClick={() => router.push("/messaging")}
+        />
 
         {/* Open Barters */}
         <section className="space-y-3">
@@ -211,55 +159,14 @@ export default function Profile() {
                   : null;
 
                 return (
-                  <div
+                  <OpenBarterCard
                     key={barter.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:-translate-y-px hover:shadow-[0_14px_34px_rgba(16,24,40,0.12)]"
-                  >
-                    <div className="flex gap-4">
-                      <button
-                        type="button"
-                        onClick={() => {}}
-                        className="group relative h-37.5 w-37.5 overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
-                        aria-label="View barter details"
-                      >
-                        {imageSrc ? (
-                          // Using <img> to avoid Next/Image config for local uploads
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={imageSrc}
-                            alt={title}
-                            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
-                        )}
-                      </button>
-
-                      <div className="min-w-0 flex-1">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedBarter(barter)}
-                          className="block w-full cursor-pointer text-left"
-                        >
-                          <div className="truncate text-xl capitalize font-extrabold tracking-tight text-slate-900">
-                            {title}
-                          </div>
-                          <div className="mt-0.5 text-md font-semibold text-slate-500">
-                            {subtitle}
-                          </div>
-                        </button>
-
-                        <div className="mt-3">
-                          <Button
-                            text="VIEW OFFER"
-                            variant="primary"
-                            clickEvent={() => {}}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    id={barter.id}
+                    title={title}
+                    subtitle={subtitle}
+                    imageSrc={imageSrc}
+                    onOpen={() => setSelectedBarter(barter)}
+                  />
                 );
               })}
             </div>
@@ -268,6 +175,67 @@ export default function Profile() {
       </div>
 
       <BottomNav />
+
+      <Modal
+        open={selectedBarter !== null}
+        title="Open barter details"
+        description="Quick preview for this user's barter listing."
+        onClose={() => setSelectedBarter(null)}
+      >
+        <div className="space-y-4">
+          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
+              OFFERING
+            </div>
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+              {(selectedBarter?.offers ?? []).slice(0, 8).map((item, idx) => (
+                <span
+                  key={`${item.id ?? idx}`}
+                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
+                  title={item.description}
+                >
+                  {item.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
+              REQUESTING
+            </div>
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+              {(selectedBarter?.requests ?? []).slice(0, 8).map((item, idx) => (
+                <span
+                  key={`${item.id ?? idx}`}
+                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
+                  title={item.description}
+                >
+                  {item.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              text="CLOSE"
+              variant="secondary"
+              className="mt-0 w-1/2 rounded-xl py-3 text-sm"
+              clickEvent={() => setSelectedBarter(null)}
+            />
+            <Button
+              text="MESSAGE"
+              variant="primary"
+              className="mt-0 w-1/2 rounded-xl py-3 text-sm hover:bg-[#100b56]"
+              clickEvent={() => {
+                setSelectedBarter(null);
+                router.push("/messaging");
+              }}
+            />
+          </div>
+        </div>
+      </Modal>
     </main>
   );
 }

@@ -45,61 +45,58 @@ export default function MessageDetail() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <TopBar />
-
-      <div className="mx-auto w-full space-y-4 px-4">
-        {/* Thread header */}
-        <div className="rounded-2xl bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              aria-label="Back"
-              onClick={() => router.push("/messaging")}
-              className="grid h-10 w-10 cursor-pointer place-items-center rounded-xl bg-white text-[#17136D] shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition active:scale-[0.99]"
-            >
-              ←
-            </button>
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-500">
-              👤
-            </div>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-extrabold text-[#17136D]">
-                {thread.otherName}
-              </div>
-              <div className="mt-0.5 text-[11px] font-semibold text-slate-500">
-                {statusText}
-              </div>
-            </div>
+      {/* Thread header */}
+      <div className="border-b border-slate-300 bg-white px-4 py-6 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-label="Back"
+            onClick={() => router.push("/messaging")}
+            className="grid h-10 w-10 cursor-pointer place-items-center rounded-xl bg-white text-[#17136D] shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition active:scale-[0.99]"
+          >
+            ←
+          </button>
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-500">
+            👤
           </div>
-          {/* Actions */}
-          <div className="mt-4 flex gap-3">
-            <Button
-              text="REJECT OFFER"
-              variant="secondary"
-              disabled={!actionsEnabled}
-              className={[
-                "mt-0 w-1/2 rounded-xl bg-[#FF5B5B] text-white hover:bg-[#ff5b5bdd]",
-                !actionsEnabled ? "hover:bg-[#FF5B5B]" : "",
-              ].join(" ")}
-              clickEvent={() => setConfirm("REJECT")}
-            />
-            <Button
-              text="ACCEPT OFFER"
-              variant="primary"
-              disabled={!actionsEnabled}
-              className={["mt-0 w-1/2 rounded-xl "].join(" ")}
-              clickEvent={() => setConfirm("ACCEPT")}
-            />
+          <div className="min-w-0">
+            <div className="truncate text-sm font-extrabold text-[#17136D]">
+              {thread.otherName}
+            </div>
+            <div className="mt-0.5 text-[11px] font-semibold text-slate-500">
+              {statusText}
+            </div>
           </div>
         </div>
-
+        {/* Actions */}
+        <div className="mt-3 flex gap-3">
+          <Button
+            text="REJECT OFFER"
+            variant="secondary"
+            disabled={!actionsEnabled}
+            className={[
+              "mt-0 w-1/2 rounded-xl bg-[#FF5B5B] text-white hover:bg-[#ff5b5bdd]",
+              !actionsEnabled ? "hover:bg-[#FF5B5B]" : "",
+            ].join(" ")}
+            clickEvent={() => setConfirm("REJECT")}
+          />
+          <Button
+            text="ACCEPT OFFER"
+            variant="primary"
+            disabled={!actionsEnabled}
+            className={["mt-0 w-1/2 rounded-xl "].join(" ")}
+            clickEvent={() => setConfirm("ACCEPT")}
+          />
+        </div>
+      </div>
+      <div className="mx-auto mt-4 w-full space-y-4 flex flex-col items-center">
         {/* Timestamp */}
         <div className="text-center text-[10px] font-extrabold tracking-wide text-slate-300">
           {thread.messages[0]?.timestampLabel ?? "TODAY"}
         </div>
 
         {/* Chat */}
-        <div className="space-y-3">
+        <div className="space-y-3 w-full max-w-[650px] px-2">
           {messages.map((m) => (
             <ChatBubble key={m.id} side={m.from} text={m.text} />
           ))}
@@ -107,8 +104,8 @@ export default function MessageDetail() {
       </div>
 
       {/* Composer */}
-      <div className="fixed inset-x-0 bottom-20 z-20 px-4 ">
-        <div className="mx-auto w-full rounded-2xl bg-white p-3 border border-slate-300">
+      <div className="fixed inset-x-0 bottom-20 z-20 flex justify-center px-4">
+        <div className="w-full max-w-[650px] rounded-2xl bg-white p-3 border border-slate-300">
           <div className="flex items-center gap-1">
             <input
               ref={fileInputRef}
