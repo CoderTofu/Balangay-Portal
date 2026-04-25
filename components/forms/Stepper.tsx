@@ -7,12 +7,12 @@ type StepperProps = {
 
 export default function Stepper({ steps, currentStep }: StepperProps) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex justify-center w-full gap-4">
       {steps.map((label, idx) => {
         const isActive = idx === currentStep;
 
         return (
-          <div key={label} className="flex flex-1 items-center gap-3">
+          <div key={label} className="flex items-center gap-3">
             <div className="flex items-center gap-3">
               <div
                 className={[
@@ -35,7 +35,7 @@ export default function Stepper({ steps, currentStep }: StepperProps) {
             </div>
 
             {idx < steps.length - 1 ? (
-              <div className="h-px flex-1 bg-slate-200" />
+              <div className="h-px w-12 flex-1 bg-slate-200" />
             ) : null}
           </div>
         );

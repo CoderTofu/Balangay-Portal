@@ -108,11 +108,11 @@ export default function SignUp() {
   );
 
   return (
-    <main className="min-h-screen pb-24">
+    <main className="min-h-screen pb-4">
       <TopBar></TopBar>
       <div className="mx-auto w-full px-4 ">
         {/* Stepper */}
-        <section className="rounded-2xl bg-white px-6 pt-5 pb-10 shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
+        <section className="flex flex-col justify-center rounded-2xl bg-white px-6 pt-5 pb-10 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
           <Stepper
             steps={["Register", "Profile"]}
             currentStep={step === "register" ? 0 : 1}
@@ -126,7 +126,7 @@ export default function SignUp() {
 
               <div className="mt-6 space-y-4">
                 <LabeledField label="Email">
-                  <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                  <div className="rounded-xl bg-white">
                     <InputField
                       type="email"
                       value={email}
@@ -139,7 +139,7 @@ export default function SignUp() {
                 </LabeledField>
 
                 <LabeledField label="Password">
-                  <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                  <div className="rounded-xl bg-white">
                     <InputField
                       type="password"
                       value={password}
@@ -152,7 +152,7 @@ export default function SignUp() {
                 </LabeledField>
 
                 <LabeledField label="Confirm Password">
-                  <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                  <div className="rounded-xl bg-white">
                     <InputField
                       type="password"
                       value={confirmPassword}
@@ -170,6 +170,41 @@ export default function SignUp() {
               <h1 className="mt-6 text-2xl font-bold tracking-tight text-[#0F172A]">
                 Tell us about yourself.
               </h1>
+
+              <div className="mt-6 space-y-4">
+                <LabeledField label="First Name">
+                  <div className="rounded-xl bg-white">
+                    <InputField
+                      value={firstName}
+                      setContent={setFirstName}
+                      placeholder="e.g., John Paolo"
+                      className="shadow-none focus:ring-0"
+                    />
+                  </div>
+                </LabeledField>
+
+                <LabeledField label="Last Name">
+                  <div className="rounded-xl bg-white">
+                    <InputField
+                      value={lastName}
+                      setContent={setLastName}
+                      placeholder="e.g., Dela Cruz"
+                      className="shadow-none focus:ring-0"
+                    />
+                  </div>
+                </LabeledField>
+
+                <LabeledField label="Location">
+                  <div className="rounded-xl bg-white">
+                    <DropdownField
+                      value={location}
+                      setContent={setLocation}
+                      options={locationOptions}
+                      className="shadow-none focus:ring-0"
+                    />
+                  </div>
+                </LabeledField>
+              </div>
 
               {/* Represent */}
               <div className="mt-6">
@@ -193,54 +228,21 @@ export default function SignUp() {
               </div>
 
               {/* Individual form */}
-              {!isBusiness ? (
-                <div className="mt-6 space-y-4">
-                  <LabeledField label="First Name">
-                    <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-                      <InputField
-                        value={firstName}
-                        setContent={setFirstName}
-                        placeholder="e.g., John Paolo"
-                        className="shadow-none focus:ring-0"
-                      />
-                    </div>
-                  </LabeledField>
-
-                  <LabeledField label="Last Name">
-                    <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-                      <InputField
-                        value={lastName}
-                        setContent={setLastName}
-                        placeholder="e.g., Dela Cruz"
-                        className="shadow-none focus:ring-0"
-                      />
-                    </div>
-                  </LabeledField>
-
-                  <LabeledField label="Location">
-                    <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
-                      <DropdownField
-                        value={location}
-                        setContent={setLocation}
-                        options={locationOptions}
-                        className="shadow-none focus:ring-0"
-                      />
-                    </div>
-                  </LabeledField>
-                </div>
-              ) : null}
+              {/* {!isBusiness ? (
+                <div></div>
+              ) : null} */}
 
               {/* Business information */}
               {isBusiness ? (
-                <div className="mt-6 rounded-2xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.06)]">
+                <div className="mt-6">
                   <h3 className="text-sm font-extrabold tracking-wide text-[#17136D]">
                     BUSINESS INFORMATION
                   </h3>
-                  <div className="mt-3 h-px w-full bg-slate-200" />
+                  <div className="mt-3 h-min w-full " />
 
                   <div className="mt-5 space-y-4">
                     <LabeledField label="Business Name">
-                      <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                      <div className="rounded-xl">
                         <InputField
                           value={businessName}
                           setContent={setBusinessName}
@@ -251,11 +253,11 @@ export default function SignUp() {
                     </LabeledField>
 
                     <LabeledField label="Short Description">
-                      <div className="rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+                      <div className="rounded-xl">
                         <TextArea
                           value={shortDescription}
                           setContent={setShortDescription}
-                          placeholder="Provide short description about the business..."
+                          placeholder="Provide a short description about the business..."
                           rows={3}
                           className="shadow-none focus:ring-0"
                         />
@@ -269,7 +271,7 @@ export default function SignUp() {
         </section>
 
         {/* Bottom action */}
-        <div className="mt-5 pb-6">
+        <div className="h-15">
           {step === "register" ? (
             <Button
               text="Next"
@@ -278,18 +280,18 @@ export default function SignUp() {
               clickEvent={() => setStep("profile")}
             />
           ) : (
-            <div className="flex gap-3">
+            <div className="flex flex-row gap-3">
               <Button
                 text="Back"
                 variant="secondary"
-                className="mt-3 w-1/2"
+                className="mt-3"
                 clickEvent={() => setStep("register")}
               />
               <Button
                 text="Submit"
                 variant="primary"
                 disabled={profileDisabled}
-                className="mt-3 w-1/2"
+                className="mt-2"
                 clickEvent={() => {}}
               />
             </div>

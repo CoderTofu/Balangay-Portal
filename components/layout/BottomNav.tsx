@@ -10,7 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Home,
-  Search,
+  // Search,
   PlusCircle,
   MessageCircle,
   User,
@@ -22,11 +22,11 @@ const NAV_ITEMS = [
     href: "/home",
     icon: Home,
   },
-  {
-    label: "Search",
-    href: "/search",
-    icon: Search,
-  },
+  // {
+  //   label: "Search",
+  //   href: "/search",
+  //   icon: Search,
+  // },
   {
     label: "Post",
     href: "/post",
