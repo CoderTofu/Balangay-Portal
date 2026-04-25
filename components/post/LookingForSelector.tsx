@@ -1,67 +1,41 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-type DropdownOption = {
-  label: string;
-  value: string;
+type LookingForSelectorProps = {
+  options: string[];
+  selected: string[];
+  search: string;
+  open: boolean;
+  onOpenChange: (next: boolean) => void;
+  onSearchChange: (next: string) => void;
+  onToggle: (option: string) => void;
+  onRemove: (option: string) => void;
 };
 
-type DropdownFieldProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "onChange"
-> & {
-  value: string;
-  onChange?: (value: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  name?: string;
-  required?: boolean;
-
-  // Backward-compatible alias to match InputField pattern
-  setContent?: (value: string) => void;
-  options: DropdownOption[];
-};
-
-export default function DropdownField({
-  value,
-  onChange,
-  setContent = () => {},
+export default function LookingForSelector({
   options,
-  disabled = false,
-  placeholder = "Select an option...",
-  name,
-  required,
-  className = "",
-}: DropdownFieldProps) {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  selected,
+  search,
+  open,
+  onOpenChange,
+  onSearchChange,
+  onToggle,
+  onRemove,
+}: LookingForSelectorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  const selectedOption = useMemo(
-    () => options.find((opt) => opt.value === value) ?? null,
-    [options, value],
-  );
-
-  const filteredOptions = useMemo(
-    () =>
-      options.filter((opt) =>
-        opt.label.toLowerCase().includes(search.toLowerCase()),
-      ),
-    [options, search],
-  );
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setSearch("");
+        onOpenChange(false);
+        onSearchChange("");
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, [onOpenChange, onSearchChange]);
 
   useEffect(() => {
     if (!open) return;
@@ -69,30 +43,45 @@ export default function DropdownField({
     return () => window.clearTimeout(id);
   }, [open]);
 
-  function selectOption(nextValue: string) {
-    onChange?.(nextValue);
-    setContent(nextValue);
-    setOpen(false);
-    setSearch("");
-  }
+  const filteredOptions = useMemo(
+    () => options.filter((opt) => opt.toLowerCase().includes(search.toLowerCase())),
+    [options, search],
+  );
 
   return (
-    <div className={`relative ${className}`.trim()} ref={containerRef}>
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={() => setOpen((prev) => !prev)}
+    <div className="relative" ref={containerRef}>
+      <div
         className={[
-          "w-full min-h-[48px] rounded-xl border bg-white px-4 py-3 pr-10 text-left text-sm font-medium",
-          "transition-all",
+          "w-full min-h-[48px] cursor-pointer rounded-xl border bg-white px-3 py-2 pr-10",
+          "flex flex-wrap items-center gap-2 transition-all",
           open ? "border-[#17136D] ring-2 ring-[#17136D]/20" : "border-[#bfd5f0]",
-          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
         ].join(" ")}
+        onClick={() => onOpenChange(!open)}
       >
-        <span className={selectedOption ? "text-black" : "text-slate-400"}>
-          {selectedOption?.label ?? placeholder}
-        </span>
-        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+        {selected.length === 0 ? (
+          <span className="text-sm text-slate-400">Select options...</span>
+        ) : (
+          selected.map((opt) => (
+            <span
+              key={opt}
+              className="flex items-center gap-1 rounded-full bg-[#E9EEFF] px-3 py-1 text-xs font-semibold text-[#17136D]"
+            >
+              {opt}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove(opt);
+                }}
+                className="ml-0.5 leading-none text-[#17136D] hover:text-[#100b56]"
+                aria-label={`Remove ${opt}`}
+              >
+                ×
+              </button>
+            </span>
+          ))
+        )}
+        <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
           <svg
             width="16"
             height="16"
@@ -104,13 +93,10 @@ export default function DropdownField({
           >
             <polyline points="6 9 12 15 18 9" />
           </svg>
-        </span>
-      </button>
+        </div>
+      </div>
 
-      {/* Hidden input preserves form compatibility */}
-      {name ? <input type="hidden" name={name} value={value} required={required} /> : null}
-
-      {open && !disabled ? (
+      {open ? (
         <div className="absolute bottom-full z-20 mb-1 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 px-3 pb-2 pt-3">
             <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
@@ -130,15 +116,18 @@ export default function DropdownField({
                 type="text"
                 placeholder="Search..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => onSearchChange(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 className="flex-1 bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none"
               />
               {search ? (
                 <button
                   type="button"
-                  onClick={() => setSearch("")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSearchChange("");
+                  }}
                   className="leading-none text-slate-400 hover:text-slate-600"
-                  aria-label="Clear search"
                 >
                   ×
                 </button>
@@ -153,21 +142,24 @@ export default function DropdownField({
               </div>
             ) : (
               filteredOptions.map((opt) => {
-                const isSelected = opt.value === value;
+                const checked = selected.includes(opt);
                 return (
                   <button
-                    key={opt.value}
+                    key={opt}
                     type="button"
                     className={[
                       "flex w-full cursor-pointer items-center justify-between px-4 py-2.5 text-left text-sm transition-colors",
-                      isSelected
+                      checked
                         ? "bg-[#EEF0FF] font-semibold text-[#17136D]"
                         : "text-slate-700 hover:bg-slate-50",
                     ].join(" ")}
-                    onClick={() => selectOption(opt.value)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggle(opt);
+                    }}
                   >
-                    <span>{opt.label}</span>
-                    {isSelected ? (
+                    <span>{opt}</span>
+                    {checked ? (
                       <svg
                         width="16"
                         height="16"
@@ -189,3 +181,4 @@ export default function DropdownField({
     </div>
   );
 }
+
