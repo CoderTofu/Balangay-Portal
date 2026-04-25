@@ -1,6 +1,9 @@
+"use client";
+
 import "./globals.css";
 import "./index.css";
+import Image from "next/image";
 
-export default function Home() {
-  return <div className=""></div>;
+export default function App() {
+  return <div className="min-h-screen bg-white"></div>;
 }
