@@ -50,7 +50,6 @@ export default function PostCard({
               Trusted Trader
             </div>
           ) : null}
-          zd
         </div>
 
         <div className="px-5 pb-5 pt-4">
@@ -83,16 +82,22 @@ export default function PostCard({
                 {listing.lookingFor}
               </div>
             </div>
-            <Link
-              href={`/home/${listing.id}`}
-              onClick={() => onOffer?.(listing.id)}
-              className="inline-flex items-center justify-center rounded-xl bg-[#17136D] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(23,19,109,0.25)] transition hover:bg-[#100b56] "
-            >
-              Offer
-            </Link>
           </div>
         </div>
       </Link>
+
+      <div className="px-5 pb-5 -mt-1 flex items-center justify-between gap-3">
+        <span className="text-xs font-semibold text-slate-500">
+          {saved ? "Saved" : "Tap heart to save"}
+        </span>
+        <Link
+          href={`/home/${listing.id}`}
+          onClick={() => onOffer?.(listing.id)}
+          className="inline-flex items-center justify-center rounded-xl bg-[#17136D] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(23,19,109,0.25)] transition hover:bg-[#100b56]"
+        >
+          Offer
+        </Link>
+      </div>
     </article>
   );
 }
