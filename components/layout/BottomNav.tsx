@@ -19,7 +19,7 @@ import {
 const NAV_ITEMS = [
   {
     label: "Home",
-    href: "/marketplace",
+    href: "/home",
     icon: Home,
   },
   {
@@ -29,23 +29,24 @@ const NAV_ITEMS = [
   },
   {
     label: "Post",
-    href: "/listings/new",
+    href: "/post",
     icon: PlusCircle,
   },
   {
     label: "Messages",
-    href: "/trades",
+    href: "/messaging",
     icon: MessageCircle,
   },
   {
     label: "Profile",
-    href: "/profile/me",
+    href: "/profile",
     icon: User,
   },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const brand = "#17136D";
 
   const isActive = (href: string) => {
     if (href === "/marketplace") {
@@ -55,8 +56,8 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-bottom no-print">
-      <div className="max-w-lg mx-auto flex items-center justify-around h-16">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-[#17136D]/10 shadow-[0_-10px_30px_rgba(16,24,40,0.08)] safe-bottom no-print">
+      <div className="mx-auto flex h-16 max-w-lg items-center justify-around px-2">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.href);
           const Icon = item.icon;
@@ -66,39 +67,38 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center min-w-[64px] py-1 transition-colors ${
+              className={`relative flex min-w-[64px] flex-col items-center justify-center py-2 transition-colors ${
                 isPost
                   ? ""
                   : active
-                  ? "text-primary"
-                  : "text-gray-400 hover:text-gray-600"
+                    ? `text-[${brand}]`
+                    : "text-slate-400 hover:text-slate-600"
               }`}
             >
-              {isPost ? (
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 -mt-5 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                    <Icon size={24} className="text-white" strokeWidth={2.5} />
-                  </div>
-                  <span className="text-[10px] font-medium text-primary mt-0.5">
-                    {item.label}
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <Icon
-                    size={22}
-                    strokeWidth={active ? 2.5 : 1.8}
-                    className={active ? "text-primary" : ""}
-                  />
+              <>
+                {!isPost && (
                   <span
-                    className={`text-[10px] mt-0.5 ${
-                      active ? "font-bold text-primary" : "font-medium"
+                    aria-hidden="true"
+                    className={`absolute top-1/2 h-12 w-full translate-y-[-60%] rounded-sm transition ${
+                      active ? "bg-[#17136D]/10" : "bg-transparent"
                     }`}
-                  >
-                    {item.label}
-                  </span>
-                </>
-              )}
+                  />
+                )}
+                <Icon
+                  size={22}
+                  strokeWidth={active ? 2.5 : 1.8}
+                  className="relative z-10"
+                  style={active ? { color: brand } : undefined}
+                />
+                <span
+                  className={`text-[10px] mt-0.5 ${
+                    active ? "font-bold" : "font-medium"
+                  }`}
+                  style={active ? { color: brand } : undefined}
+                >
+                  {item.label}
+                </span>
+              </>
             </Link>
           );
         })}
