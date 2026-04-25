@@ -18,7 +18,7 @@ export default function Button({
   className = "",
 }: ButtonProps) {
   const baseStyles =
-    "mt-3 w-full rounded-2xl px-6 py-5 text-base font-semibold shadow-2xs transition delay-150 duration-300 ease-in-out active:scale-[0.99]";
+    "mt-3 mb-3 w-full h-15 rounded-2xl items-centerpx-6 py-5 text-base font-semibold shadow-2xs transition delay-150 duration-300 ease-in-out active:scale-[0.99]";
 
   const variants = {
     primary: "bg-[#070235] text-white hover:bg-[#070235dd]",

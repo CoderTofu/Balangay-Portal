@@ -54,7 +54,10 @@ export default function DropdownField({
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
         setSearch("");
       }
@@ -85,7 +88,9 @@ export default function DropdownField({
         className={[
           "w-full min-h-[48px] rounded-xl border bg-white px-4 py-3 pr-10 text-left text-sm font-medium",
           "transition-all",
-          open ? "border-[#17136D] ring-2 ring-[#17136D]/20" : "border-[#bfd5f0]",
+          open
+            ? "border-[#17136D] ring-2 ring-[#17136D]/20"
+            : "border-[#bfd5f0]",
           disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
         ].join(" ")}
       >
@@ -108,7 +113,9 @@ export default function DropdownField({
       </button>
 
       {/* Hidden input preserves form compatibility */}
-      {name ? <input type="hidden" name={name} value={value} required={required} /> : null}
+      {name ? (
+        <input type="hidden" name={name} value={value} required={required} />
+      ) : null}
 
       {open && !disabled ? (
         <div className="absolute bottom-full z-20 mb-1 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
