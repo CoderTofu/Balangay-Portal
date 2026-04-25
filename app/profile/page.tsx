@@ -118,6 +118,11 @@ export default function Profile() {
     return Math.max(0, raw);
   }, [user]);
 
+  const handleSignOut = () => {
+    localStorage.removeItem("curruser_id");
+    router.push("/login");
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 pb-24">
       <TopBar />
@@ -134,7 +139,7 @@ export default function Profile() {
             if (!user?.location) return;
             navigator.clipboard?.writeText(user.location).catch(() => {});
           }}
-          onMessageClick={() => router.push("/messaging")}
+          onSignOut={handleSignOut}
         />
 
         {/* Open Barters */}

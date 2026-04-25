@@ -10,7 +10,7 @@ type ProfileSummaryCardProps = {
   rating: number;
   loading?: boolean;
   onCopyLocation?: () => void;
-  onMessageClick?: () => void;
+  onSignOut?: () => void;
 };
 
 export default function ProfileSummaryCard({
@@ -21,7 +21,7 @@ export default function ProfileSummaryCard({
   rating,
   loading = false,
   onCopyLocation,
-  onMessageClick,
+  onSignOut,
 }: ProfileSummaryCardProps) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:shadow-[0_14px_34px_rgba(16,24,40,0.12)]">
@@ -40,18 +40,21 @@ export default function ProfileSummaryCard({
               {location.toUpperCase()}
             </button>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">
-              {(userType === "business" ? "BUSINESS" : "INDIVIDUAL").toUpperCase()}
+              {(userType === "business"
+                ? "BUSINESS"
+                : "INDIVIDUAL"
+              ).toUpperCase()}
             </span>
           </div>
         </div>
 
         <button
           type="button"
-          aria-label="View messages"
-          onClick={onMessageClick}
-          className="grid h-10 w-10 cursor-pointer place-items-center rounded-xl bg-white text-[#17136D] shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:bg-slate-50 active:scale-[0.99]"
+          aria-label="Sign out"
+          onClick={onSignOut}
+          className="cursor-pointer rounded-xl bg-[#FF5B5B] px-3 py-2 text-xs font-bold tracking-wide text-white shadow-[0_10px_25px_rgba(16,24,40,0.08)] transition hover:bg-[#ff5b5bdd] transition-all active:scale-[0.99]"
         >
-          🔔
+          Sign out
         </button>
       </div>
 
