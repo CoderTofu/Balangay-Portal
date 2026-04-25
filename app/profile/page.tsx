@@ -6,7 +6,6 @@ import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
 import Button from "@/components/forms/Buttons";
 import StarRating from "@/components/posts/StarRating";
-import Modal from "@/components/ui/Modal";
 
 type UserProfile = {
   id: string;
@@ -60,11 +59,14 @@ export default function Profile() {
       if (!userId) return;
       setLoadingUser(true);
       try {
-        const res = await fetch("http://localhost:8080/api/users/get-user-by-id", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: userId }),
-        });
+        const res = await fetch(
+          "http://localhost:8080/api/users/get-user-by-id",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: userId }),
+          },
+        );
         const data = (await res.json()) as UserProfile;
         setUser(data);
       } catch {
@@ -128,7 +130,9 @@ export default function Profile() {
                   type="button"
                   onClick={() => {
                     if (user?.location) {
-                      navigator.clipboard?.writeText(user.location).catch(() => {});
+                      navigator.clipboard
+                        ?.writeText(user.location)
+                        .catch(() => {});
                     }
                   }}
                   className="cursor-pointer rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D] transition hover:brightness-95 active:scale-[0.99]"
@@ -137,7 +141,10 @@ export default function Profile() {
                   {(user?.location || "—").toUpperCase()}
                 </button>
                 <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">
-                  {(user?.type === "business" ? "BUSINESS" : "INDIVIDUAL").toUpperCase()}
+                  {(user?.type === "business"
+                    ? "BUSINESS"
+                    : "INDIVIDUAL"
+                  ).toUpperCase()}
                 </span>
               </div>
             </div>
@@ -199,8 +206,9 @@ export default function Profile() {
                 const primaryOffer = barter.offers?.[0];
                 const title = primaryOffer?.name ?? "Barter Offer";
                 const subtitle = user?.location ?? "—";
-                const imageSrc =
-                  primaryOffer?.image_url ? `/uploads/${primaryOffer.image_url}` : null;
+                const imageSrc = primaryOffer?.image_url
+                  ? `/uploads/${primaryOffer.image_url}`
+                  : null;
 
                 return (
                   <div
@@ -210,8 +218,8 @@ export default function Profile() {
                     <div className="flex gap-4">
                       <button
                         type="button"
-                        onClick={() => setSelectedBarter(barter)}
-                        className="group relative h-16 w-20 overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
+                        onClick={() => {}}
+                        className="group relative h-37.5 w-37.5 overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
                         aria-label="View barter details"
                       >
                         {imageSrc ? (
@@ -234,20 +242,19 @@ export default function Profile() {
                           onClick={() => setSelectedBarter(barter)}
                           className="block w-full cursor-pointer text-left"
                         >
-                          <div className="truncate text-sm font-extrabold tracking-tight text-slate-900">
+                          <div className="truncate text-xl capitalize font-extrabold tracking-tight text-slate-900">
                             {title}
                           </div>
-                          <div className="mt-0.5 text-xs font-semibold text-slate-500">
+                          <div className="mt-0.5 text-md font-semibold text-slate-500">
                             {subtitle}
                           </div>
                         </button>
 
                         <div className="mt-3">
                           <Button
-                            text="OFFER"
+                            text="VIEW OFFER"
                             variant="primary"
-                            className="mt-0 rounded-xl py-3 text-sm shadow-[0_10px_25px_rgba(23,19,109,0.18)] hover:bg-[#100b56]"
-                            clickEvent={() => setSelectedBarter(barter)}
+                            clickEvent={() => {}}
                           />
                         </div>
                       </div>
@@ -261,67 +268,6 @@ export default function Profile() {
       </div>
 
       <BottomNav />
-
-      <Modal
-        open={selectedBarter !== null}
-        title="Make an offer"
-        description="Quick preview of this open barter. (Hook up your offer flow here when ready.)"
-        onClose={() => setSelectedBarter(null)}
-      >
-        <div className="space-y-4">
-          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
-              OFFERING
-            </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {(selectedBarter?.offers ?? []).slice(0, 8).map((o, idx) => (
-                <span
-                  key={`${o.id ?? idx}`}
-                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
-                  title={o.description}
-                >
-                  {o.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
-              REQUESTING
-            </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {(selectedBarter?.requests ?? []).slice(0, 8).map((r, idx) => (
-                <span
-                  key={`${r.id ?? idx}`}
-                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
-                  title={r.description}
-                >
-                  {r.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <Button
-              text="CLOSE"
-              variant="secondary"
-              className="mt-0 w-1/2 rounded-xl py-3 text-sm"
-              clickEvent={() => setSelectedBarter(null)}
-            />
-            <Button
-              text="CONTINUE"
-              variant="primary"
-              className="mt-0 w-1/2 rounded-xl py-3 text-sm hover:bg-[#100b56]"
-              clickEvent={() => {
-                setSelectedBarter(null);
-                router.push("/messaging");
-              }}
-            />
-          </div>
-        </div>
-      </Modal>
     </main>
   );
 }
