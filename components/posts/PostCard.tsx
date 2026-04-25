@@ -53,10 +53,10 @@ export default function PostCard({ listing, initiallySaved = false }: PostCardPr
         className="block cursor-pointer overflow-hidden rounded-2xl transition  focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
       >
         <div className="relative aspect-16/10 w-full bg-slate-100">
-          {listing.imageSrc ? (
+          {listing?.imgURL ? (
             <Image
-              alt={listing.title}
-              src={listing.imageSrc}
+              alt={listing?.title}
+              src={`/images/${listing?.imgURL}`}
               fill
               className="object-cover transition duration-300"
               priority={false}

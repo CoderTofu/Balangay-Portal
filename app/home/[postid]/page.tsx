@@ -92,17 +92,17 @@ export default function PostDetail() {
       <div className="mx-auto max-w-[650px] w-full space-y-4 px-4">
         <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(16,24,40,0.10)]">
           <div className="relative aspect-16/10 w-full overflow-hidden rounded-t-2xl bg-slate-100">
-            {/* {listing.imageSrc ? (
+            {listing?.imgURL ? (
               <Image
-                alt={listing.title}
-                src={listing.imageSrc}
+                alt={listing?.title}
+                src={`/images/${listing.imgURL}`}
                 fill
                 className="object-cover"
                 priority
               />
-            ) : ( */}
+            ) : (
               <div className="absolute inset-0 bg-linear-to-br from-slate-200 via-slate-100 to-white" />
-            {/* )} */}
+             )} 
 
             <div className="absolute left-4 top-4">
               <Button

@@ -32,7 +32,7 @@ export default function OpenBarterCard({
           {imageSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={imageSrc}
+              src={`images/${imageSrc}`}
               alt={title}
               className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
               loading="lazy"
