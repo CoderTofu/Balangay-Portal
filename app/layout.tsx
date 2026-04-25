@@ -6,6 +6,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Balangay",
   description: "",
+  icons: {
+    icon: "/design-assets/logo-login.png",
+  },
 };
 
 const googleSans = Google_Sans_Flex({
