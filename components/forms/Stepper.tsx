@@ -18,7 +18,7 @@ export default function Stepper({ steps, currentStep }: StepperProps) {
                 className={[
                   "grid h-9 w-9 place-items-center rounded-full text-sm font-bold transition-colors duration-200",
                   isActive
-                    ? "bg-[#F1D36B] text-[#17136D]"
+                    ? "bg-[#F1D36B] text-[#17136D] border border-[#6D5E00]"
                     : "bg-slate-200 text-slate-500",
                 ].join(" ")}
               >

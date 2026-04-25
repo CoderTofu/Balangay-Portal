@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Building2, User as UserIcon } from "lucide-react";
 import InputField from "@/components/forms/InputField";
@@ -233,7 +232,7 @@ export default function SignUp() {
 
               {/* Business information */}
               {isBusiness ? (
-                <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.06)]">
+                <div className="mt-6 rounded-2xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.06)]">
                   <h3 className="text-sm font-extrabold tracking-wide text-[#17136D]">
                     BUSINESS INFORMATION
                   </h3>

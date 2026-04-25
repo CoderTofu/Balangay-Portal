@@ -32,7 +32,7 @@ export default function DropdownField({
         onChange?.(e.target.value);
         setContent(e.target.value);
       }}
-      className={`w-full cursor-pointer appearance-none rounded-xl border border-[#bfd5f0] bg-white px-5 py-3 text-sm font-medium text-[#3268A8] outline-none transition focus:ring-2 focus:ring-[#3268A8]/25 ${className}`.trim()}
+      className={`w-full cursor-pointer appearance-none rounded-xl border border-[#bfd5f0] bg-white px-5 py-3 text-sm font-medium text-[#000] outline-none transition focus:ring-2 focus:ring-[#3268A8]/25 ${className}`.trim()}
       {...props}
     >
       {options.map((opt) => (
