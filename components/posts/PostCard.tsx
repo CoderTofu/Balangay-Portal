@@ -73,28 +73,28 @@ export default function PostCard({ listing, initiallySaved = false }: PostCardPr
           <p className="mt-1 text-sm text-slate-600">{authorName}</p>
 
           <div className="mt-3 flex flex-wrap gap-2">
-            <span className="rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]">{listing.location}</span>
-            <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">{listing.type}</span>
+            <span className="rounded-md bg-[#F1D36B] px-2 py-1 text-[10px] font-extrabold tracking-wide text-[#17136D]">
+              {listing.location}
+            </span>
+            <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-extrabold tracking-wide text-slate-600">
+              {listing.type}
+            </span>
           </div>
 
-          <div className="mt-4 flex items-end border-t border-slate-200 pt-4 justify-between">
+          <div className="mt-4 flex items-center border-t border-slate-200 pt-0 justify-between">
             <div>
               <div className="text-[10px] font-semibold tracking-wide text-slate-400">
                 LOOKING FOR
               </div>
-              {/* //TODO: pls fix ui */}
-              {
-                listing.requests.map((request: any) => (
-                  <div key={request} className="mt-1 text-sm font-semibold text-slate-900">
-                    {request}
-                  </div>
-                  
-                ))
-              }
-            </div>  
+              <div className="mt-1 text-sm font-semibold text-slate-900">
+                {listing.requests.map((request: Text) => {
+                  return request + " ";
+                })}
+              </div>
+            </div>
             <Button
               text="Offer"
-              className="inline-flex items-center justify-center rounded-xl bg-[#17136D]! px-8! py-2.5! text-sm font-semibold text-white transition hover:bg-[#100b56]! w-fit!"
+              className="inline-flex items-center justify-center rounded-xl bg-[#17136D]! px-8! py-2.5! text-sm font-semibold text-white transition hover:bg-[#100b56]! h-fit! w-fit!"
             ></Button>
           </div>
         </div>

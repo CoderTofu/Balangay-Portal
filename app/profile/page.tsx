@@ -175,67 +175,6 @@ export default function Profile() {
       </div>
 
       <BottomNav />
-
-      <Modal
-        open={selectedBarter !== null}
-        title="Open barter details"
-        description="Quick preview for this user's barter listing."
-        onClose={() => setSelectedBarter(null)}
-      >
-        <div className="space-y-4">
-          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
-              OFFERING
-            </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {(selectedBarter?.offers ?? []).slice(0, 8).map((item, idx) => (
-                <span
-                  key={`${item.id ?? idx}`}
-                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
-                  title={item.description}
-                >
-                  {item.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
-            <div className="text-[11px] font-extrabold tracking-wide text-slate-600">
-              REQUESTING
-            </div>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {(selectedBarter?.requests ?? []).slice(0, 8).map((item, idx) => (
-                <span
-                  key={`${item.id ?? idx}`}
-                  className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-200"
-                  title={item.description}
-                >
-                  {item.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <Button
-              text="CLOSE"
-              variant="secondary"
-              className="mt-0 w-1/2 rounded-xl py-3 text-sm"
-              clickEvent={() => setSelectedBarter(null)}
-            />
-            <Button
-              text="MESSAGE"
-              variant="primary"
-              className="mt-0 w-1/2 rounded-xl py-3 text-sm hover:bg-[#100b56]"
-              clickEvent={() => {
-                setSelectedBarter(null);
-                router.push("/messaging");
-              }}
-            />
-          </div>
-        </div>
-      </Modal>
     </main>
   );
 }

@@ -15,7 +15,7 @@ export default function Login() {
     <main className="min-h-screen bg-white">
       <div className="mx-auto flex min-h-screen w-full flex-col">
         {/* Header / artwork */}
-        <section className="relative flex-1 px-8 pt-14 max-w-screen overflow-hidden">
+        <section className="relative flex-1 px-8 pt-14 max-w-screen h-full max-h-[60vh] overflow-hidden">
           {/* Background */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-linear-to-b from-[#9DD6D3] via-[#F6C56F] to-white" />
@@ -29,27 +29,25 @@ export default function Login() {
           </div>
 
           {/* Headline */}
-          <h1 className="relative z-10 max-w-65 text-3xl font-semibold italic tracking-tight text-white drop-shadow-sm">
+          <h1 className="absolute top-35 z-10 max-w-65 text-3xl font-semibold italic tracking-tight text-white drop-shadow-sm">
             Ikot ng halaga,
             <br />
             ikot ng kabuhayan
           </h1>
 
           {/* Logo illustration */}
-          <div className="pointer-events-none absolute bottom-0 right-0 z-1 w-125 translate-x-1/5 ">
+          <div className="pointer-events-none h-full absolute bottom-0 right-0 z-1 w-125 translate-x-1/8">
             <Image
               alt="Balangay"
               src="/design-assets/logo-login.png"
-              width={720}
-              height={720}
+              fill
               priority
-              className="h-auto w-full"
+              className="h-auto w-full min-w-[400px]"
             />
           </div>
         </section>
-
         {/* Form */}
-        <section className="px-8 pb-10 pt-6">
+        <section className="px-8 pb-10 pt-4">
           <div className="space-y-4">
             <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(16,24,40,0.12)]">
               <InputField
@@ -81,27 +79,35 @@ export default function Login() {
                 }}
                 variant="secondary"
               ></Button>
-              <Button text="Sign in" clickEvent={async () => {
-                try {
-                   const resp = await fetch('http://localhost:8080/api/users/login-by-email', {
-                     method: 'POST',
-                     headers: {
-                       'Content-Type': 'application/json'
-                     },
-                     body: JSON.stringify({ email })
-                   });
-                   const data = await resp.json();
-                   if (resp.ok) {
+              <Button
+                text="Sign in"
+                clickEvent={async () => {
+                  try {
+                    const resp = await fetch(
+                      "http://localhost:8080/api/users/login-by-email",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ email }),
+                      },
+                    );
+                    const data = await resp.json();
+                    if (resp.ok) {
                       console.log("Login successful, user data:", data);
-                      localStorage.setItem('curruser_id', data.id);
+                      localStorage.setItem("curruser_id", data.id);
                       router.push("/home");
                     } else {
-                      alert("Login failed: " + (data.message || "Unknown error"));
+                      alert(
+                        "Login failed: " + (data.message || "Unknown error"),
+                      );
                     }
-                } catch (error) {
-                  console.error("Login failed:", error);
-                }
-              }} />
+                  } catch (error) {
+                    console.error("Login failed:", error);
+                  }
+                }}
+              />
             </div>
           </div>
 
@@ -111,6 +117,8 @@ export default function Login() {
             </span>
           </div> */}
         </section>
+
+        <div className="w-full"></div>
       </div>
     </main>
   );

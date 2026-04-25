@@ -1,11 +1,21 @@
 "use client";
 
 type ChatBubbleProps = {
-  side: "me" | "them";
+  side: "me" | "them" | "system";
   text: string;
 };
 
 export default function ChatBubble({ side, text }: ChatBubbleProps) {
+  if (side === "system") {
+    return (
+      <div className="flex justify-center py-1">
+        <div className="rounded-full bg-[#F1D36B]/80 px-3 py-1 text-[11px] font-extrabold tracking-wide text-[#3268A8] ring-1 ring-[#F1D36B]">
+          {text}
+        </div>
+      </div>
+    );
+  }
+
   const isMe = side === "me";
   return (
     <div className={["flex", isMe ? "justify-end" : "justify-start"].join(" ")}>

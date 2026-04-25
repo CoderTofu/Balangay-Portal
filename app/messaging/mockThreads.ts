@@ -4,7 +4,7 @@ export type OfferStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
 export type Message = {
   id: string;
-  from: "me" | "them";
+  from: "me" | "them" | "system";
   text: string;
   timestampLabel?: string;
 };
@@ -29,6 +29,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "PENDING",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "them",
         text: "Hey! I saw your post about the gardening tools. I don’t have the cash right now, but would you be interested in a swap? I can handle your grocery runs for the next month!",
@@ -43,6 +48,16 @@ export const MOCK_THREADS: OfferThread[] = [
         from: "them",
         text: "Absolutely. I love cooking. How about 3 meals a week plus the grocery run in exchange for the 4 hours of gardening you mentioned?",
       },
+      {
+        id: "m4",
+        from: "me",
+        text: "That setup works. Can you start this weekend?",
+      },
+      {
+        id: "m5",
+        from: "them",
+        text: "Yes, weekend works for me. I can send a schedule tonight.",
+      },
     ],
   },
   {
@@ -53,6 +68,11 @@ export const MOCK_THREADS: OfferThread[] = [
     side: "THEIR OFFERS",
     status: "PENDING",
     messages: [
+      {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
       {
         id: "m1",
         from: "them",
@@ -70,6 +90,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "ACCEPTED",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "them",
         text: "Hello! I can swap 5kg rice + a tray of eggs for your cooked ulam. Is that okay?",
@@ -79,6 +104,36 @@ export const MOCK_THREADS: OfferThread[] = [
         id: "m2",
         from: "me",
         text: "Deal! Let’s coordinate pickup time and location.",
+      },
+      {
+        id: "m3",
+        from: "them",
+        text: "Great! I can pick up by 8AM tomorrow.",
+      },
+      {
+        id: "m4",
+        from: "me",
+        text: "8AM is good. I’ll prepare the packs.",
+      },
+      {
+        id: "m5",
+        from: "system",
+        text: "STAGE 2: OFFER ACCEPTED",
+      },
+      {
+        id: "m6",
+        from: "them",
+        text: "On the way now, see you shortly.",
+      },
+      {
+        id: "m7",
+        from: "me",
+        text: "Received, thank you!",
+      },
+      {
+        id: "m8",
+        from: "system",
+        text: "STAGE 3: WAITING FOR TRADE RESULT",
       },
     ],
   },
@@ -91,6 +146,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "REJECTED",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "them",
         text: "Can I swap a set of toys for the baby clothes? They’re clean and complete.",
@@ -100,6 +160,11 @@ export const MOCK_THREADS: OfferThread[] = [
         id: "m2",
         from: "me",
         text: "Thanks, Miguel! I’m prioritizing diapers/formula right now, but appreciate the offer.",
+      },
+      {
+        id: "m3",
+        from: "system",
+        text: "STAGE 2: OFFER REJECTED",
       },
     ],
   },
@@ -112,6 +177,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "PENDING",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "me",
         text: "Hi Trina! I can offer a stack of my study materials and I can pick it up today.",
@@ -121,6 +191,11 @@ export const MOCK_THREADS: OfferThread[] = [
         id: "m2",
         from: "them",
         text: "Hi! Thanks for reaching out. Let me check with my family and I’ll update you.",
+      },
+      {
+        id: "m3",
+        from: "me",
+        text: "Sure, thanks. I can adjust pickup time if needed.",
       },
     ],
   },
@@ -133,6 +208,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "ACCEPTED",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "me",
         text: "Hello! I can offer ₱1,200 via GCash. Can we meet at the barangay hall?",
@@ -142,6 +222,26 @@ export const MOCK_THREADS: OfferThread[] = [
         id: "m2",
         from: "them",
         text: "Sure! ₱1,200 works. Tomorrow morning at the barangay hall is good.",
+      },
+      {
+        id: "m3",
+        from: "system",
+        text: "STAGE 2: OFFER ACCEPTED",
+      },
+      {
+        id: "m4",
+        from: "me",
+        text: "Got it, I’ll be there by 9AM.",
+      },
+      {
+        id: "m5",
+        from: "them",
+        text: "Perfect, see you!",
+      },
+      {
+        id: "m6",
+        from: "system",
+        text: "STAGE 3: WAITING FOR TRADE RESULT",
       },
     ],
   },
@@ -154,6 +254,11 @@ export const MOCK_THREADS: OfferThread[] = [
     status: "REJECTED",
     messages: [
       {
+        id: "m0",
+        from: "system",
+        text: "STAGE 1: INITIAL NEGOTIATION",
+      },
+      {
         id: "m1",
         from: "me",
         text: "Hi Luna! I can swap cooked meals (3x) for your vegetables. Interested?",
@@ -163,6 +268,11 @@ export const MOCK_THREADS: OfferThread[] = [
         id: "m2",
         from: "them",
         text: "Thanks! I already have someone for meals, but appreciate it.",
+      },
+      {
+        id: "m3",
+        from: "system",
+        text: "STAGE 2: OFFER REJECTED",
       },
     ],
   },

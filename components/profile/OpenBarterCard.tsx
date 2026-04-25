@@ -26,7 +26,7 @@ export default function OpenBarterCard({
         <button
           type="button"
           onClick={onOpen}
-          className="group relative h-16 w-20 overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
+          className="group relative h-[150px] w-[150px] overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#17136D]/20"
           aria-label={`View ${title}`}
         >
           {imageSrc ? (
@@ -34,7 +34,7 @@ export default function OpenBarterCard({
             <img
               src={`images/${imageSrc}`}
               alt={title}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+              className="object-cover transition duration-300 group-hover:scale-[1.02]"
               loading="lazy"
             />
           ) : (
@@ -48,17 +48,19 @@ export default function OpenBarterCard({
             onClick={onOpen}
             className="block w-full cursor-pointer text-left"
           >
-            <div className="truncate text-sm font-extrabold tracking-tight text-slate-900">
+            <div className="truncate text-md font-extrabold tracking-tight text-slate-900">
               {title}
             </div>
-            <div className="mt-0.5 text-xs font-semibold text-slate-500">{subtitle}</div>
+            <div className="mt-0.5 text-sm font-semibold text-slate-500">
+              {subtitle}
+            </div>
           </button>
 
           <div className="mt-3">
             <Button
               text="VIEW OFFER"
               variant="primary"
-              className="mt-0 rounded-xl py-3 text-sm shadow-[0_10px_25px_rgba(23,19,109,0.18)] hover:bg-[#100b56]"
+              className="mt-0 rounded-xl py-3! text-sm! shadow-[0_10px_25px_rgba(23,19,109,0.18)] hover:bg-[#100b56]"
               clickEvent={onOpen}
             />
           </div>
