@@ -87,9 +87,9 @@ export default function PostCard({ listing, initiallySaved = false }: PostCardPr
                 LOOKING FOR
               </div>
               <div className="mt-1 text-sm font-semibold text-slate-900">
-                {listing.requests.map((request: Text) => {
-                  return request + " ";
-                })}
+                {Array.isArray(listing.requests)
+                  ? listing.requests.join(" | ")
+                  : ""}
               </div>
             </div>
             <Button

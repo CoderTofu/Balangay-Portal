@@ -1,7 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import BottomNav from "@/components/layout/BottomNav";
@@ -51,7 +51,8 @@ type CategoryType = "Inventory" | "Storage" | "Service";
 
 export default function Post() {
   const router = useRouter();
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [listingName, setListingName] = useState("");
   const [location, setLocation] = useState("Manila City");
   const [category, setCategory] = useState<CategoryType>("Inventory");
@@ -67,10 +68,18 @@ export default function Post() {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    setImage(file.name);
+    setImage(file);
+    setImagePreviewUrl((prevUrl) => {
+      if (prevUrl) URL.revokeObjectURL(prevUrl);
+      return URL.createObjectURL(file);
+    });
   };
   const removeImage = () => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+    }
     setImage(null);
+    setImagePreviewUrl(null);
   };
   const toggleLookingFor = (option: string) => {
     setLookingFor((prev) =>
@@ -105,7 +114,7 @@ export default function Post() {
             type: category,
             requests: lookingFor,
             author_id: localStorage.getItem("curruser_id"),
-            imgURL: image || null,
+            imgURL: image?.name || null,
             status: "open",
           }),
         },
@@ -126,6 +135,14 @@ export default function Post() {
 
   const canSubmit =
     listingName.trim().length > 0 && image !== null && lookingFor.length > 0;
+
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
 
   const categoryIcons: Record<CategoryType, JSX.Element> = {
     Inventory: (
@@ -187,7 +204,7 @@ export default function Post() {
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
           <PostImageUploader
-            images={image ? [image] : []}
+            image={imagePreviewUrl}
             isDragging={isDragging}
             onDragStateChange={setIsDragging}
             onUpload={handleImageUpload}
@@ -273,9 +290,6 @@ export default function Post() {
           <div className="text-sm font-semibold text-slate-700">
             <span className="text-slate-500">Looking for:</span>{" "}
             {lookingFor.join(", ") || "—"}
-          </div>
-          <div className="text-sm font-semibold text-slate-700">
-            <span className="text-slate-500">Images:</span> {image ? 1 : 0}
           </div>
           {submitError ? (
             <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600">

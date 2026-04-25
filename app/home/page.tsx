@@ -14,11 +14,11 @@ export default function Home() {
   const [listings, setListings] = useState<any[]>([]);
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "All" | "Inventory" | "Services" | "Storage"
+    "All" | "Inventory" | "Service" | "Storage"
   >("All");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const tabs = ["All", "Inventory", "Service", "Storage"] as const;
+  const tabs = ["All", "Inventory", "Storage", "Service"] as const;
 
   useEffect(() => {
     //fetch listings from backend

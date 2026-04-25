@@ -3,21 +3,22 @@
 import { useRef } from "react";
 
 type PostImageUploaderProps = {
-  images: string[];
+  image: string | null;
   isDragging: boolean;
   onDragStateChange: (dragging: boolean) => void;
   onUpload: (files: FileList | null) => void;
-  onRemoveImage: (index: number) => void;
+  onRemoveImage: () => void;
 };
 
 export default function PostImageUploader({
-  images,
+  image,
   isDragging,
   onDragStateChange,
   onUpload,
   onRemoveImage,
 }: PostImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewImage = image;
 
   return (
     <div
@@ -41,28 +42,27 @@ export default function PostImageUploader({
         onUpload(e.dataTransfer.files);
       }}
     >
-      {images.length > 0 ? (
-        <div className="flex flex-wrap gap-2 p-3">
-          {images.map((src, i) => (
-            <div key={i} className="relative h-24 w-24 overflow-hidden rounded-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full object-cover" />
-              <button
-                type="button"
-                className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/50 text-xs text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemoveImage(i);
-                }}
-                aria-label="Remove image"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-          {/* <div className="flex h-24 w-24 items-center justify-center rounded-xl border-2 border-dashed border-slate-300 text-2xl text-slate-400">
-            +
-          </div> */}
+      {previewImage ? (
+        <div className="relative h-full min-h-[180px] w-full p-3">
+          <div className="relative h-full min-h-[156px] w-full overflow-hidden rounded-xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={previewImage}
+              alt="Listing preview"
+              className="h-full w-full object-cover"
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/55 text-sm text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemoveImage();
+              }}
+              aria-label="Remove image"
+            >
+              ×
+            </button>
+          </div>
         </div>
       ) : (
         <div className="relative flex h-full flex-col items-center justify-center py-10">
@@ -114,7 +114,7 @@ export default function PostImageUploader({
             <p className="text-center text-xs font-semibold uppercase leading-5 tracking-widest text-slate-500">
               Drag & Drop or
               <br />
-              Tap to Upload Images
+              Tap to Upload Image
             </p>
           </div>
         </div>
