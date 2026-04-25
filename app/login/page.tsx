@@ -13,7 +13,7 @@ export default function Login() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="mx-auto flex min-h-screen w-full flex-col">
+      <div className="mx-auto flex min-h-screen w-full max-w-[650px] flex-col">
         {/* Header / artwork */}
         <section className="relative flex-1 px-8 pt-14 max-w-screen h-full max-h-[60vh] overflow-hidden">
           {/* Background */}
