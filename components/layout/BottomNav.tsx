@@ -85,7 +85,7 @@ export default function BottomNav() {
                 {!isPost && (
                   <span
                     aria-hidden="true"
-                    className={`absolute top-1/2 h-12 w-full translate-y-[-60%] rounded-sm transition ${
+                    className={` absolute top-1/2 h-12 w-full translate-y-[-50%] rounded-sm transition ${
                       active ? "bg-[#17136D]/10" : "bg-transparent"
                     }`}
                   />

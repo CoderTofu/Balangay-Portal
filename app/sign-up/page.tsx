@@ -32,11 +32,11 @@ export default function SignUp() {
   const isBusiness = represent === "business";
 
   const registerDisabled = useMemo(() => {
-    const emailOk = email.trim().length > 3 && email.includes("@");
-    const passOk = password.length >= 6;
-    const confirmOk =
-      confirmPassword.length > 0 && confirmPassword === password;
-    return !(emailOk && passOk && confirmOk);
+    return (
+      email.trim().length === 0 ||
+      password.trim().length === 0 ||
+      confirmPassword.trim().length === 0
+    );
   }, [confirmPassword, email, password]);
 
   const profileDisabled = useMemo(() => {
@@ -273,7 +273,7 @@ export default function SignUp() {
           {step === "register" ? (
             <Button
               text="Next"
-              variant="secondary"
+              variant="primary"
               disabled={registerDisabled}
               clickEvent={() => setStep("profile")}
             />
