@@ -107,14 +107,14 @@ export const MOCK_THREADS: OfferThread[] = [
     id: "thread-005",
     postTitle: "Used Study Table (Good Condition)",
     otherName: "Trina Villanueva",
-    offerSummary: "I’M OFFERING CASH + PICKUP",
+    offerSummary: "I’M OFFERING STUDY MATERIALS + PICKUP",
     side: "MY OFFERS",
     status: "PENDING",
     messages: [
       {
         id: "m1",
         from: "me",
-        text: "Hi Trina! I can offer ₱600 and I can pick it up today.",
+        text: "Hi Trina! I can offer a stack of my study materials and I can pick it up today.",
         timestampLabel: "TODAY, 9:14 AM",
       },
       {
