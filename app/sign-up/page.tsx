@@ -42,7 +42,11 @@ export default function SignUp() {
   const profileDisabled = useMemo(() => {
     if (isBusiness) {
       return (
-        businessName.trim().length === 0 || shortDescription.trim().length === 0
+        firstName.trim().length === 0 ||
+        lastName.trim().length === 0 ||
+        location.trim().length === 0 ||
+        businessName.trim().length === 0 || 
+        shortDescription.trim().length === 0
       );
     }
     return (
@@ -108,10 +112,10 @@ export default function SignUp() {
   );
 
   return (
-    <main className="min-h-screen pb-24 flex flex-col justify-center items-center">
+    <main className="mt-6 flex flex-col">
       <div className="mx-auto w-full px-4">
         {/* Stepper */}
-        <section className="flex flex-col justify-center rounded-2xl bg-white px-6 pt-5 pb-10 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
+        <section className="flex flex-col rounded-2xl bg-white px-6 pt-5 pb-10 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
           <Stepper
             steps={["Register", "Profile"]}
             currentStep={step === "register" ? 0 : 1}
@@ -251,7 +255,7 @@ export default function SignUp() {
                       </div>
                     </LabeledField>
 
-                    <LabeledField label="Short Description">
+                    <LabeledField label="Business Description">
                       <div className="rounded-xl">
                         <TextArea
                           value={shortDescription}
