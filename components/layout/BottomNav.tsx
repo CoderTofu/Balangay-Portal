@@ -39,7 +39,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Profile",
-    href: "/profile",
+    href: `/profile?id=${localStorage.getItem('curruser_id')}`,
     icon: User,
   },
 ];

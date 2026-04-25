@@ -60,9 +60,9 @@ export default function PostImageUploader({
               </button>
             </div>
           ))}
-          <div className="flex h-24 w-24 items-center justify-center rounded-xl border-2 border-dashed border-slate-300 text-2xl text-slate-400">
+          {/* <div className="flex h-24 w-24 items-center justify-center rounded-xl border-2 border-dashed border-slate-300 text-2xl text-slate-400">
             +
-          </div>
+          </div> */}
         </div>
       ) : (
         <div className="relative flex h-full flex-col items-center justify-center py-10">
@@ -124,7 +124,7 @@ export default function PostImageUploader({
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        multiple
+        // multiple
         className="hidden"
         onChange={(e) => onUpload(e.target.files)}
       />
