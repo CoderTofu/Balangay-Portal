@@ -81,7 +81,27 @@ export default function Login() {
                 }}
                 variant="secondary"
               ></Button>
-              <Button text="Sign in" clickEvent={() => {}} />
+              <Button text="Sign in" clickEvent={async () => {
+                try {
+                   const resp = await fetch('http://localhost:8080/api/users/login-by-email', {
+                     method: 'POST',
+                     headers: {
+                       'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({ email })
+                   });
+                   const data = await resp.json();
+                   if (resp.ok) {
+                      console.log("Login successful, user data:", data);
+                      localStorage.setItem('curruser_id', data.id);
+                      router.push("/home");
+                    } else {
+                      alert("Login failed: " + (data.message || "Unknown error"));
+                    }
+                } catch (error) {
+                  console.error("Login failed:", error);
+                }
+              }} />
             </div>
           </div>
 

@@ -49,7 +49,7 @@ const LOOKING_FOR_OPTIONS = [
 type CategoryType = "Inventory" | "Storage" | "Service";
 
 export default function Post() {
-  const [images, setImages] = useState<string[]>([]);
+  const [image, setImage] = useState<string | null>(null);
   const [listingName, setListingName] = useState("");
   const [location, setLocation] = useState("Manila City");
   const [category, setCategory] = useState<CategoryType>("Inventory");
@@ -59,21 +59,15 @@ export default function Post() {
   const [isDragging, setIsDragging] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  const handleImageUpload = (files: FileList | null) => {
-    if (!files) return;
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImages((prev) => [...prev, e.target?.result as string]);
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+ const handleImageUpload = (files: FileList | null) => {
+  if (!files || files.length === 0) return;
 
-  const removeImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
+  const file = files[0];
+  setImage(file.name);
+};
+  const removeImage = () => {
+    setImage(null);
   };
-
   const toggleLookingFor = (option: string) => {
     setLookingFor((prev) =>
       prev.includes(option)
@@ -88,11 +82,11 @@ export default function Post() {
 
   const handleSubmit = () => {
     setShowSubmitModal(true);
-    console.log({ images, listingName, location, category, lookingFor });
+    console.log({ image, listingName, location, category, lookingFor });
   };
 
   const canSubmit =
-    listingName.trim().length > 0 && images.length > 0 && lookingFor.length > 0;
+  listingName.trim().length > 0 && image !== null && lookingFor.length > 0;
 
   const categoryIcons: Record<CategoryType, JSX.Element> = {
     Inventory: (
@@ -133,7 +127,7 @@ export default function Post() {
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_25px_rgba(16,24,40,0.08)]">
           <PostImageUploader
-            images={images}
+            images={image ? [image] : []}
             isDragging={isDragging}
             onDragStateChange={setIsDragging}
             onUpload={handleImageUpload}
@@ -219,13 +213,30 @@ export default function Post() {
             {lookingFor.join(", ") || "—"}
           </div>
           <div className="text-sm font-semibold text-slate-700">
-            <span className="text-slate-500">Images:</span> {images.length}
+            <span className="text-slate-500">Images:</span> {image ? 1 : 0}
           </div>
           <Button
             text="Close"
             variant="secondary"
             className="mt-3 rounded-xl py-3 text-sm"
-            clickEvent={() => setShowSubmitModal(false)}
+            clickEvent={async () => {
+              setShowSubmitModal(false);
+              const resp = await fetch('http://localhost:8080/api/trades/create-trade', 
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    title: listingName,
+                    location: location,
+                    type: category,
+                    requests: lookingFor,
+                    author_id: localStorage.getItem('curruser_id'),
+                    imgURL: image || null,
+                    status: 'open'
+                  }),
+                }
+              )
+            }}
           />
         </div>
       </Modal>
