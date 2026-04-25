@@ -71,7 +71,6 @@ export default function MessageDetail() {
               </div>
             </div>
           </div>
-
           {/* Actions */}
           <div className="mt-4 flex gap-3">
             <Button
