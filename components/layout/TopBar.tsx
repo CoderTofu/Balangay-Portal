@@ -20,13 +20,13 @@ export default function TopBar() {
           </span>
         </div>
 
-        <button
+        {/* <button
           type="button"
           aria-label="Notifications"
           className="grid h-11 w-11 place-items-center rounded-xl bg-white shadow-[0_10px_25px_rgba(16,24,40,0.08)]"
         >
           <span className="text-[#17136D]">🔔</span>
-        </button>
+        </button> */}
       </div>
     </header>
   );
